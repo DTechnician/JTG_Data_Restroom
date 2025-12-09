@@ -1,0 +1,1 @@
+{{regression_raw('samsara', 'accessory_device')}}

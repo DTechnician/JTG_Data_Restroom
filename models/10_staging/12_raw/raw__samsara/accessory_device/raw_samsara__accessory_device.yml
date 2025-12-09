@@ -1,0 +1,11 @@
+version: 2
+
+models:
+  - name: raw_samsara__accessory_device
+    description: ""
+    tests:
+      - unique:
+          column_name: serial
+      - not_null:
+          column_name: serial
+

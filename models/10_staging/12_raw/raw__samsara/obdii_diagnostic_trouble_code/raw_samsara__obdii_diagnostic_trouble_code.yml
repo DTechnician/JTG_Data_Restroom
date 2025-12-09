@@ -1,0 +1,11 @@
+version: 2
+
+models:
+  - name: raw_samsara__obdii_diagnostic_trouble_code
+    description: ""
+    tests:
+      - unique:
+          column_name: tx_id
+      - not_null:
+          column_name: tx_id
+

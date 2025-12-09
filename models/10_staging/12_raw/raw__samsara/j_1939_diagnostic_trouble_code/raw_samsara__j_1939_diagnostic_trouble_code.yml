@@ -1,0 +1,11 @@
+version: 2
+
+models:
+  - name: raw_samsara__j_1939_diagnostic_trouble_code
+    description: ""
+    tests:
+      - unique:
+          column_name: _fivetran_id
+      - not_null:
+          column_name: _fivetran_id
+

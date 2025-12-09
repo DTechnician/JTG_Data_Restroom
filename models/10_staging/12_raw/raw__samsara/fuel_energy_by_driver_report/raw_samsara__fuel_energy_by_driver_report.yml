@@ -1,0 +1,11 @@
+version: 2
+
+models:
+  - name: raw_samsara__fuel_energy_by_driver_report
+    description: ""
+    tests:
+      - unique:
+          column_name: id
+      - not_null:
+          column_name: id
+

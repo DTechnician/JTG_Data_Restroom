@@ -1,0 +1,11 @@
+version: 2
+
+models:
+  - name: raw_samsara__dtc
+    description: ""
+    tests:
+      - unique:
+          column_name: _fivetran_id
+      - not_null:
+          column_name: _fivetran_id
+

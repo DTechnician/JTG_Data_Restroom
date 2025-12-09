@@ -1,0 +1,12 @@
+version: 2
+
+models:
+  - name: raw_samsara__vehicle_trip
+    description: ""
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - end_ms
+              - start_ms
+              - vehicle_id

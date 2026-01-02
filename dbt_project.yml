@@ -1,15 +1,9 @@
-<<<<<<< HEAD
-# Name your project! Project names should contain only lowercase characters
-# and underscores. A good package name should reflect your organization's
-# name or the intended use of these models
-name: 'jtg_data_restroom'
-=======
 
 # Name your project! Project names should contain only lowercase characters
 # and underscores. A good package name should reflect your organization's
 # name or the intended use of these models
-name: 'my_new_project'
->>>>>>> 7967b73a0745dce59ee4b33c7ba1cfe16fd1e2b6
+name: 'jtg_data_restroom'
+
 version: '1.0.0'
 config-version: 2
 
@@ -25,11 +19,10 @@ test-paths: ["tests"]
 seed-paths: ["seeds"]
 macro-paths: ["macros"]
 snapshot-paths: ["snapshots"]
-<<<<<<< HEAD
-=======
+
 
 target-path: "target"  # directory which will store compiled SQL files
->>>>>>> 7967b73a0745dce59ee4b33c7ba1cfe16fd1e2b6
+
 clean-targets:         # directories to be removed by `dbt clean`
   - "target"
   - "dbt_packages"
@@ -46,7 +39,7 @@ clean-targets:         # directories to be removed by `dbt clean`
 # using the `{{ config(...) }}` macro.
 
 models:
-<<<<<<< HEAD
+
   jtg_data_restroom:
     # Applies to all files under models/example/
     10_staging:
@@ -59,9 +52,3 @@ models:
         +materialized: incremental
 flags:
   require_generic_test_arguments_property: true
-=======
-  my_new_project:
-    # Applies to all files under models/example/
-    example:
-      +materialized: table
->>>>>>> 7967b73a0745dce59ee4b33c7ba1cfe16fd1e2b6

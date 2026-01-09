@@ -1,0 +1,48 @@
+{{ config(
+    materialized='incremental',
+    tag='dims',
+    unique_key='daily_route_productivity_sk',
+    incremental_strategy='merge',
+    merge_update_columns=['is_current', 'valid_to']
+) }}
+
+{{ generate_dimension(
+    source = "navusoft",
+    table_name = "daily_route_productivity",
+    natural_key = ["route_id", "scheduleddate"],
+    attributes = [
+"division_id",
+"period_id",
+"lob_id",
+"truckname",
+"driver_name",
+"truck_state",
+"weeknum",
+"route_name",
+"division_name",
+"lob_name",
+"disposaluom",
+"error_message",
+"scheduledQuantity",
+"scheduledCount",
+"servicedCount",
+"notservicedCount",
+"serviceQuantity",
+"scheduledVolume",
+"collectedvolume",
+"productivityunits",
+"operating_hours",
+"labor_hours",
+"truckMiles",
+"downtime_hours",
+"disposalquantity",
+"non_recycle_quantity",
+"recycle_quantity",
+"waste_quantity",
+"disposalcount",
+"disposalcost",
+"fuel",
+"revenue",
+    ],
+    scd_type = 2
+) }}    

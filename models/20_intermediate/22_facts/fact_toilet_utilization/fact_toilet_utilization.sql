@@ -1,0 +1,57 @@
+{{ config(
+    materialized = 'incremental',
+    tag = 'facts',
+    unique_key = ['siteservice_id', 'service_date'],
+    incremental_strategy = 'merge'
+) }}
+
+with
+
+active_services AS (
+
+    SELECT
+        active_services_sk,
+        siteservice_id,
+        site_id,
+        division_id,
+        lob_id,
+        eqquipmenttype_name,
+        equipmenttype_id,
+        servicecode_id,
+        quantity,
+        record_loaded_at,
+        CAST(startdate AS DATE) AS start_date,
+        CAST(COALESCE(enddate, billed_through_date) AS DATE) AS end_date
+    FROM {{ ref('dim_active_services') }}
+    WHERE is_current = TRUE
+),
+
+toilet_utilization AS (
+
+    SELECT
+        a.active_services_sk,
+
+        d.date AS service_date,
+
+        a.siteservice_id,
+        a.site_id,
+        a.division_id,
+        a.lob_id,
+        a.eqquipmenttype_name,
+        a.equipmenttype_id,
+        a.servicecode_id,
+
+        a.quantity AS active_toilet_count,
+        a.record_loaded_at
+
+    FROM active_services a
+    join {{ ref('dim_date') }} d
+      ON d.date BETWEEN a.start_date AND a.end_date
+)
+
+SELECT *
+FROM toilet_utilization
+
+{% if is_incremental() %}
+where record_loaded_at > (select coalesce(max(record_loaded_at), '1900-01-01') from {{ this }})
+{% endif %}

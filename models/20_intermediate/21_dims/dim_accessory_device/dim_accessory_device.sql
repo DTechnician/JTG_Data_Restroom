@@ -7,12 +7,11 @@
 ) }}
 
 {{ generate_dimension(
-    source = "samsara",
-    table_name = "accessory_device",
-    natural_key = ["serial"],
+    source = "navusoft",
+    table_name = "account_and_site",
+    natural_key = ["site_division_id"],
     attributes = [
-        "model",
-        "gateway_id"
+        "site_division_name"
     ],
     scd_type = 2
 ) }}

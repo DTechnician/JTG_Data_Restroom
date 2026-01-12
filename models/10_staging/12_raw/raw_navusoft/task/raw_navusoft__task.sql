@@ -3,7 +3,7 @@
     entity_name='v_query_task',
     unique_key='payload_hash',
     fields=[
-{'name': 'account_id', 'type': 'timestamp_ntz'},
+{'name': 'account_id', 'type': 'number'},
 {'name': 'task_id', 'type': 'number'},
 {'name': 'created_time_stamp', 'type': 'timestamp_ntz'},
 {'name': 'due_date', 'type': 'timestamp_ntz'},

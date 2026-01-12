@@ -53,5 +53,5 @@ SELECT *
 FROM equipment_utilization
 
 {% if is_incremental() %}
-where record_loaded_at >= (select coalesce(max(record_loaded_at), '1900-01-01') from {{ this }})
+where record_loaded_at > (select coalesce(max(record_loaded_at), '1900-01-01') from {{ this }})
 {% endif %}

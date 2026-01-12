@@ -26,7 +26,7 @@ active_services AS (
     WHERE is_current = TRUE
 ),
 
-toilet_utilization AS (
+equipment_utilization AS (
 
     SELECT
         a.active_services_sk,
@@ -50,8 +50,8 @@ toilet_utilization AS (
 )
 
 SELECT *
-FROM toilet_utilization
+FROM equipment_utilization
 
 {% if is_incremental() %}
-where record_loaded_at > (select coalesce(max(record_loaded_at), '1900-01-01') from {{ this }})
+where record_loaded_at >= (select coalesce(max(record_loaded_at), '1900-01-01') from {{ this }})
 {% endif %}

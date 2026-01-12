@@ -17,13 +17,6 @@ quantity,
 perunitrate,
 rate,
 
-site_name,
-site_address_line_1,
-site_address_line_2,
-site_city,
-site_state,
-site_zip,
-
 service_code_name,
 lob_name,
 equipmenttype_name,

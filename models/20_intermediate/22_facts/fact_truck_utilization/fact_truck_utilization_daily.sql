@@ -87,10 +87,7 @@ samsara_trip as (
             else to_timestamp(end_ms, 3)
         end as end_date,
 
-        week(start_date) as week,
         (vt.distance_meters / 1609.34) as distance_mi,
-
-        obd.engine_hours_on,
         
         fuel_consumed_ml,
         (fuel_consumed_ml / 3785.41) as fuel_consumed_gal
@@ -100,9 +97,6 @@ samsara_trip as (
         on vt.vehicle_sk = v.vehicle_sk
     left join {{ ref('dim_driver') }} d
         on vt.driver_sk = d.driver_sk
-    left join vehicle_obd obd
-        on vt.vehicle_id = obd.vehicle_id
-        and date(start_date) = obd_date
     left join vehicle_function vf
         on vt.vehicle_sk = vf.vehicle_sk
 )
@@ -112,7 +106,6 @@ samsara_trip as (
     select
         vehicle_name,
         date(start_date) as trip_day,
-        week,
         truck_function,
 
         SUM(distance_mi) as total_distance_mi,
@@ -122,9 +115,12 @@ samsara_trip as (
         MAX(engine_hours_on) / 60 * 100 AS utilization_percent
 
 
-    from samsara_trip
+    from samsara_trip st
+    left join vehicle_obd obd
+    on st.vehicle_id = obd.vehicle_id
+    and trip_day = obd_date
     group by
-    vehicle_name, trip_day, week, truck_function
+    vehicle_name, trip_day, truck_function
 )
 
 select
@@ -138,7 +134,6 @@ select
 
     a.vehicle_name,
     a.trip_day,
-    a.week,
     a.truck_function,
 
     total_distance_mi,

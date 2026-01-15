@@ -70,6 +70,7 @@ samsara_trip as (
             else to_timestamp(end_ms, 3)
         end as end_date,
 
+        date(start_date) as tripe_date,
         week(start_date) as week,
 
         (vt.distance_meters / 1609.34) as distance_mi,
@@ -91,6 +92,7 @@ samsara_trip as (
     select
         st.vehicle_id,
         vehicle_name,
+        tripe_date,
         week,
         truck_function,
 
@@ -105,7 +107,7 @@ samsara_trip as (
     on st.vehicle_id = obd.vehicle_id
     and st.week = obd.obd_week
     group by
-    st.vehicle_id, vehicle_name, week, truck_function
+    st.vehicle_id, vehicle_name, tripe_date, week, truck_function
 )
 
 select
@@ -115,6 +117,7 @@ select
     --MEASURES---
 
     a.vehicle_name,
+    a.tripe_date,
     a.week,
 
     total_distance_mi,
@@ -126,5 +129,7 @@ select
     a.truck_function
 
 from aggregated a
+where vehicle_name = '#77 NJ SERVICE - RODOLFO'
+and week = 1
 
 

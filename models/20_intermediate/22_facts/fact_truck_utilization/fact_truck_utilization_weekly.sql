@@ -129,7 +129,5 @@ select
     a.truck_function
 
 from aggregated a
-where vehicle_name = '#77 NJ SERVICE - RODOLFO'
-and week = 1
 
 

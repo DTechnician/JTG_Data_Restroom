@@ -95,8 +95,7 @@ samsara_trip as (
 
     select
         vehicle_name,
-        start_date,
-        end_date,
+        date(start_date) as trip_day,
         week,
         truck_function,
 
@@ -104,13 +103,13 @@ samsara_trip as (
         SUM(fuel_consumed_ml) as total_fuel_consump_ml,
         SUM(fuel_consumed_gal) as total_fuel_consump_gal,
         SUM(truck_use_in_hours) as truck_total_hrs,
-        SUM(engine_hours_on) as engine_on_hrs,
-        SUM(engine_hours_on) / 60 * 100 AS utilization_percent
+        MAX(engine_hours_on) as engine_on_hrs,
+        MAX(engine_hours_on) / 60 * 100 AS utilization_percent
 
 
     from samsara_trip
     group by
-    vehicle_name, start_date, end_date, week, truck_function
+    vehicle_name, trip_day, week, truck_function
 )
 
 select
@@ -123,8 +122,7 @@ select
     --MEASURES---
 
     a.vehicle_name,
-    a.start_date,
-    a.end_date,
+    a.trip_day,
     a.week,
     a.truck_function,
 
@@ -137,5 +135,4 @@ select
 
 from aggregated a
 left join {{ ref('dim_date') }} s_dt
-    on date(a.start_date) = s_dt.date
-
+    on a.trip_day = s_dt.date

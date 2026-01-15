@@ -2,15 +2,33 @@
 
 with 
 
+vehicle_obd_reset as (
+
+    SELECT
+        vehicle_id,
+        DATE(time) AS obd_date,
+        time,
+        value,
+        value - LAG(value) OVER (
+            PARTITION BY vehicle_id, DATE(time)
+            ORDER BY time
+        ) AS delta_seconds
+    FROM {{ ref('dim_obd_engine_second') }}
+),
+
 vehicle_obd as (
         select
 
         vehicle_id,
-        date(time) as obd_date,
-        (MAX(value) - MIN(value)) / 3600.0 AS engine_hours_on
-
-        from {{ ref('dim_obd_engine_second') }}
+        obd_date,
+        SUM(
+        CASE
+            WHEN delta_seconds BETWEEN 0 AND 7200 THEN delta_seconds
+            ELSE 0
+        END ) / 3600.0 AS engine_hours_on
+        from vehicle_obd_reset
         group by vehicle_id, obd_date
+        order by engine_hours_on desc
 ),
 
 vehicle_function as (

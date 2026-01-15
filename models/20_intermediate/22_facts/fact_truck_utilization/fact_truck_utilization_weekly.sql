@@ -2,14 +2,33 @@
 
 with 
 
+vehicle_obd_reset as (
+
+    SELECT
+        vehicle_id,
+        DATE(time) AS obd_date,
+        time,
+        value,
+        value - LAG(value) OVER (
+            PARTITION BY vehicle_id, DATE(time)
+            ORDER BY time
+        ) AS delta_seconds
+    FROM {{ ref('dim_obd_engine_second') }}
+),
+
 vehicle_obd as (
         select
 
         vehicle_id,
         week(time) as obd_week,
-        (MAX(value) - MIN(value)) / 3600.0 AS engine_hours_on
-        from {{ ref('dim_obd_engine_second') }}
-        group by vehicle_id, obd_week
+        year(time) as obd_year,
+        SUM(
+        CASE
+            WHEN delta_seconds BETWEEN 0 AND 7200 THEN delta_seconds
+            ELSE 0
+        END ) / 3600.0 AS engine_hours_on
+        from vehicle_obd_reset
+        group by vehicle_id, obd_week, obd_year
         order by engine_hours_on desc
 
 ),
@@ -64,13 +83,13 @@ samsara_trip as (
         vf.truck_function,
         
         to_timestamp(start_ms, 3) as start_date,
+        year(start_date) as year,
 
         case
             when end_ms = 9223372036854775807 then null
             else to_timestamp(end_ms, 3)
         end as end_date,
 
-        date(start_date) as tripe_date,
         week(start_date) as week,
 
         (vt.distance_meters / 1609.34) as distance_mi,
@@ -92,8 +111,8 @@ samsara_trip as (
     select
         st.vehicle_id,
         vehicle_name,
-        tripe_date,
         week,
+        year,
         truck_function,
 
         SUM(distance_mi) as total_distance_mi,
@@ -106,8 +125,9 @@ samsara_trip as (
     left join vehicle_obd obd
     on st.vehicle_id = obd.vehicle_id
     and st.week = obd.obd_week
+    and st.year = obd.obd_year
     group by
-    st.vehicle_id, vehicle_name, tripe_date, week, truck_function
+    st.vehicle_id, vehicle_name, week, year, truck_function
 )
 
 select
@@ -117,8 +137,8 @@ select
     --MEASURES---
 
     a.vehicle_name,
-    a.tripe_date,
     a.week,
+    a.year,
 
     total_distance_mi,
     total_fuel_consump_ml,
@@ -127,7 +147,5 @@ select
     utilization_percent,
 
     a.truck_function
-
-from aggregated a
-
-
+    
+    from aggregated a

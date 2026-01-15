@@ -104,7 +104,6 @@ samsara_trip as (
     left join vehicle_obd obd
     on st.vehicle_id = obd.vehicle_id
     and st.week = obd.obd_week
-    WHERE vehicle_name = '#77 NJ SERVICE - RODOLFO'
     group by
     st.vehicle_id, vehicle_name, week, truck_function
 )

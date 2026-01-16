@@ -106,6 +106,7 @@ samsara_trip as (
     select
         vehicle_name,
         date(start_date) as trip_day,
+        week(trip_day) as trip_week,
         truck_function,
 
         SUM(distance_mi) as total_distance_mi,
@@ -120,7 +121,7 @@ samsara_trip as (
     on st.vehicle_id = obd.vehicle_id
     and trip_day = obd_date
     group by
-    vehicle_name, trip_day, truck_function
+    vehicle_name, trip_day, trip_week, truck_function
 )
 
 select
@@ -134,6 +135,7 @@ select
 
     a.vehicle_name,
     a.trip_day,
+    a.trip_week,
     a.truck_function,
 
     total_distance_mi,

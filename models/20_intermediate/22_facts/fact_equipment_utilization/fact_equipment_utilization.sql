@@ -15,6 +15,7 @@ active_services AS (
         site_id,
         division_id,
         lob_id,
+        lob_name,
         eqquipmenttype_name,
         equipmenttype_id,
         servicecode_id,
@@ -37,6 +38,7 @@ equipment_utilization AS (
         a.site_id,
         a.division_id,
         a.lob_id,
+        a.lob_name,
         a.eqquipmenttype_name,
         a.equipmenttype_id,
         a.servicecode_id,
@@ -46,7 +48,8 @@ equipment_utilization AS (
 
     FROM active_services a
     join {{ ref('dim_date') }} d
-      ON d.date BETWEEN a.start_date AND a.end_date
+    ON d.date BETWEEN a.start_date AND a.end_date
+    WHERE d.date >= CURRENT_DATE()
 )
 
 SELECT *

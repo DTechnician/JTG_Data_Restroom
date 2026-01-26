@@ -49,13 +49,12 @@ equipment_utilization AS (
     FROM active_services a
     join {{ ref('dim_date') }} d
     ON d.date BETWEEN a.start_date AND a.end_date
-    WHERE d.date >= CURRENT_DATE()
+    WHERE service_date >= CURRENT_DATE()
 )
 
 SELECT *
 FROM equipment_utilization
 
 {% if is_incremental() %}
-where record_loaded_at > (select coalesce(max(record_loaded_at), '1900-01-01') from {{ this }})
-and service_date >= CURRENT_DATE()
+where service_date >= (select coalesce(max(service_date), '1900-01-01') from {{ this }})
 {% endif %}

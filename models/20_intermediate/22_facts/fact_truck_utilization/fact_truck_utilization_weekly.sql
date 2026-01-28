@@ -20,7 +20,7 @@ vehicle_obd as (
         select
 
         vehicle_id,
-        week(time) as obd_week,
+        DATE_PART('week', DATEADD(day, 1, time)) as obd_week,
         year(time) as obd_year,
         SUM(
         CASE
@@ -90,7 +90,7 @@ samsara_trip as (
             else to_timestamp(end_ms, 3)
         end as end_date,
 
-        week(start_date) as week,
+        DATE_PART('week', DATEADD(day, 1, start_date)) as week,
 
         (vt.distance_meters / 1609.34) as distance_mi,
         

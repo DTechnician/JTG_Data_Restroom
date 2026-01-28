@@ -106,7 +106,7 @@ samsara_trip as (
     select
         vehicle_name,
         date(start_date) as trip_day,
-        week(trip_day) as trip_week,
+        DATE_PART('week', DATEADD(day, 1, start_date)) as trip_week,
         truck_function,
 
         SUM(distance_mi) as total_distance_mi,
@@ -146,4 +146,4 @@ select
 
 from aggregated a
 left join {{ ref('dim_date') }} s_dt
-    on a.trip_day = s_dt.date
+on trip_day = s_dt.date

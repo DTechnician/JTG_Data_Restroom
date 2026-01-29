@@ -1,8 +1,6 @@
 {{ config(
-    materialized = 'incremental',
-    tag = 'facts',
-    unique_key = ['siteservice_id', 'service_date'],
-    incremental_strategy = 'merge'
+    materialized = 'table',
+    tag = 'facts'
 ) }}
 
 with
@@ -54,7 +52,3 @@ equipment_utilization AS (
 
 SELECT *
 FROM equipment_utilization
-
-{% if is_incremental() %}
-where service_date >= (select coalesce(max(service_date), '1900-01-01') from {{ this }})
-{% endif %}

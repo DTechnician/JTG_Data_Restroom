@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 {{ config(
     materialized='incremental',
     tag='dims',
@@ -48,4 +49,56 @@
 "note",
     ],
     scd_type = 2
+=======
+{{ config(
+    materialized='incremental',
+    tag='dims',
+    unique_key='ar_history_sk',
+    incremental_strategy='merge',
+    merge_update_columns=['is_current', 'valid_to']
+) }}
+
+{{ generate_dimension(
+    source = "navusoft",
+    table_name = "ar_history",
+    natural_key = ["id"],
+    attributes = [
+"date",
+"duedate",
+"account_division_id",
+"account_id",
+"site_division_id",
+"batch_id",
+"amount",
+"appliedamount",
+"balance",
+"transfered_amount",
+"refunded_amount",
+"reversed_amount",
+"site_id",
+"type",
+"period_id",
+"referencenumber",
+"account_division_name",
+"accoount_name",
+"account_address_line1",
+"account_addressline2",
+"account_city",
+"account_state",
+"account_zip",
+"site_division_name",
+"site_name",
+"site_address_line1",
+"site_addressline2",
+"site_city",
+"site_state",
+"site_zip",
+"billgroup_id",
+"billing_group_name",
+"payment_type",
+"credit_card_type",
+"note",
+    ],
+    scd_type = 2
+>>>>>>> 4f71943348097e08bf897c819f49b561526606bd
 ) }}

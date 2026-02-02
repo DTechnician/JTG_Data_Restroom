@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 {{ config(
     materialized='incremental',
     tag='dims',
@@ -54,4 +55,62 @@
 "vendor_name",
     ],
     scd_type = 2
+=======
+{{ config(
+    materialized='incremental',
+    tag='dims',
+    unique_key='active_services_sk',
+    incremental_strategy='merge',
+    merge_update_columns=['is_current', 'valid_to']
+) }}
+
+{{ generate_dimension(
+    source = "navusoft",
+    table_name = "active_services",
+    natural_key = ["siteservice_id"],
+    attributes = [
+"site_id",
+"vendor_site_id",
+"division_id",
+"serviceregion_id",
+"equipmenttype_id",
+"lob_id",
+"materialtype_id",
+"servicecode_id",
+"default_destination_id",
+"reasoncode_id",
+"startdate",
+"enddate",
+"billed_through_date",
+"service_frequency",
+"routing_days",
+"route_names",
+"workorderminimum",
+"inactivity_rental_free_days",
+"inactivity_rental_rate",
+"istemp",
+"ownership",
+"current_service_notes",
+"quantity",
+"equipment_size",
+"uom",
+"rate",
+"vendor_rate",
+"rate_per_yard",
+"division_name",
+"lob_name",
+"serviceregionname",
+"site_name",
+"addressline1",
+"city",
+"state",
+"postalcode",
+"eqquipmenttype_name",
+"materialname",
+"servicecodename",
+"default_destination",
+"vendor_name",
+    ],
+    scd_type = 2
+>>>>>>> 4f71943348097e08bf897c819f49b561526606bd
 ) }}

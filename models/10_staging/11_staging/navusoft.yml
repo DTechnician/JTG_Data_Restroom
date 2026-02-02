@@ -1,0 +1,8 @@
+version: 2
+
+sources:
+  - name: navusoft
+    database: DB_LANDING_NAVUSOFT          # adjust if different
+    schema: NAVUSOFT                 # or the Fivetran-generated schema
+    tables:
+      - name: navusoft_raw_entities

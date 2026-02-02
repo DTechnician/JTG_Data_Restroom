@@ -47,4 +47,8 @@
         {'name': 'current_service_notes', 'type': 'varchar'},
     ]
   )
+<<<<<<< HEAD
 }}
+=======
+}}
+>>>>>>> 4f71943348097e08bf897c819f49b561526606bd

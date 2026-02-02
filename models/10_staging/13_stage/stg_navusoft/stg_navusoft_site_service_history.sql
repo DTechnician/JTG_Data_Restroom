@@ -1,13 +1,13 @@
 {{ config(materialized='view') }}
 
-select
+select distinct
     start_date,
-    end_date,
+    -- end_date,
     billed_thru_date,
     site_division_id,
     service_id,
     start_posted_timestamp,
-    end_posted_timestamp,
+    -- end_posted_timestamp,
     quantity,
     perunitrate,
     rate,
@@ -21,18 +21,21 @@ select
     start_reason_code,
     start_user_name,
     end_reason_code,
-    end_user_name,
+    -- end_user_name,
     service_code_id,
     service_code_name,
     lob_id,
     lob_name,
     equipmenttype_id,
     equipmenttype_name,
-    service_frequency,
+    ssh.service_frequency,
     lost_to_competitor_id,
     lost_to_competitor_name,
-    payload_hash,
+    -- payload_hash,
     rn,
+
+    sfm.sf_value,
+    rate/sfm.sf_value as calculated_revenue,
 
     /* duration */
     case
@@ -43,4 +46,5 @@ select
         else null
     end as service_duration_minutes,
     
-from {{ref('raw_navusoft__site_service_history')}}
+from {{ref('raw_navusoft__site_service_history')}} ssh
+left join {{ref('service_frequency_mapping')}} sfm on ssh.service_frequency = sfm.service_frequency

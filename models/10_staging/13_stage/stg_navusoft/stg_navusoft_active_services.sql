@@ -34,7 +34,7 @@ select
     eqquipmenttype_name,
     materialname,
     servicecodename,
-    service_frequency,
+    act.service_frequency,
     uom,
     ownership,
     vendor_name,
@@ -45,4 +45,7 @@ select
     current_service_notes,
     payload_hash,
     rn,
-from {{ref('raw_navusoft__active_services')}}
+    sfm.sf_value,
+    rate/sfm.sf_value as calculated_revenue
+from {{ref('raw_navusoft__active_services')}} act
+left join {{ref('service_frequency_mapping')}} sfm on act.service_frequency = sfm.service_frequency

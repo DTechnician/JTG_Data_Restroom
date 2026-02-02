@@ -99,13 +99,13 @@ samsara_trip as (
         fuel_consumed_ml,
         (fuel_consumed_ml / 3785.41) as fuel_consumed_gal
 
-    from {{ ref('fact_vehicle_trip') }} vt
+    from {{ ref('dim_vehicle_trip') }} vt
     left join {{ ref('dim_vehicle') }} v
-        on vt.vehicle_sk = v.vehicle_sk
+        on vt.vehicle_id = v.id
     left join {{ ref('dim_driver') }} d
-        on vt.driver_sk = d.driver_sk
+        on vt.driver_id = d.id
     left join vehicle_function vf
-        on vt.vehicle_sk = vf.vehicle_sk
+        on vt.vehicle_id = vf.id
 )
 
 , aggregated as (

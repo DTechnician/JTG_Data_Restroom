@@ -141,8 +141,4 @@
     select *
     from deduped
 
-<<<<<<< HEAD
 {% endmacro %}
-=======
-{% endmacro %}
->>>>>>> 4f71943348097e08bf897c819f49b561526606bd

@@ -8,7 +8,7 @@
     updated_at_column = 'updated_at'
 ) %}
 
-{% set src = ref(table_name) %}
+{% set src = table_name %}
 
 with raw_fact as (
 
@@ -39,7 +39,7 @@ with raw_fact as (
         {%- for key in mapping.dim_keys -%}
             {{ key }}{% if not loop.last %},{% endif %}
         {%- endfor %}
-    from {{ ref(mapping.dim_model) }}
+    from {{ mapping.dim_model }}
     where is_current = true
 )
 

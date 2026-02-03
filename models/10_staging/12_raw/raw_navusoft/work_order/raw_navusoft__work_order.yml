@@ -1,0 +1,9 @@
+version: 2
+
+models:
+  - name: raw_navusoft__work_order
+    tests:
+      - unique:
+          column_name: workordernumber
+      - not_null:
+          column_name: workordernumber

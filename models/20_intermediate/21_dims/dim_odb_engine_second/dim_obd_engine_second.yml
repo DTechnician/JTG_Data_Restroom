@@ -1,0 +1,9 @@
+version: 2
+
+models:
+  - name: dim_obd_engine_second
+    tests:
+      - unique:
+          column_name: obd_engine_second_sk
+      - not_null:
+          column_name: obd_engine_second_sk

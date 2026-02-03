@@ -1,0 +1,9 @@
+version: 2
+
+models:
+  - name: dim_vehicle
+    tests:
+      - unique:
+          column_name: vehicle_sk
+      - not_null:
+          column_name: vehicle_sk

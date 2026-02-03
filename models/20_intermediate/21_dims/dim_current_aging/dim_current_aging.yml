@@ -1,0 +1,9 @@
+version: 2
+
+models:
+  - name: dim_current_aging
+    tests:
+      - unique:
+          column_name: current_aging_sk
+      - not_null:
+          column_name: current_aging_sk

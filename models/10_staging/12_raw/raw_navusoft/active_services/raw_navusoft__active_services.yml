@@ -1,0 +1,9 @@
+version: 2
+
+models:
+  - name: raw_navusoft__active_services
+    tests:
+      - unique:
+          column_name: siteservice_id
+      - not_null:
+          column_name: siteservice_id

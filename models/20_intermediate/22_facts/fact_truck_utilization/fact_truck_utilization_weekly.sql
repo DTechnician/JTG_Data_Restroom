@@ -134,7 +134,7 @@ samsara_trip as (
 
 select
     --surrogate key--
-    MD5(CONCAT(a.vehicle_name, a.week)) AS surrogate_key,
+    MD5(CONCAT(a.vehicle_name, a.week, a.year)) AS surrogate_key,
 
     --MEASURES---
 

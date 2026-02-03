@@ -2,7 +2,7 @@ name: Trigger dbt Cloud Jobs
 
 on:
   pull_request:
-    branches: [ main, uat ]
+    branches: [ dev, uat, main ]
 
 jobs:
   dbt-dev:

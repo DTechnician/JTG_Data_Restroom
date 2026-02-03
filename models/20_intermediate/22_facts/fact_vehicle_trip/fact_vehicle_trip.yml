@@ -1,0 +1,9 @@
+version: 2
+
+models:
+  - name: fact_vehicle_trip
+    tests:
+      - unique:
+          column_name: fact_sk
+      - not_null:
+          column_name: fact_sk

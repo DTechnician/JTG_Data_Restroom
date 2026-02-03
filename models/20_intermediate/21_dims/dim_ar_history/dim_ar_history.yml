@@ -1,0 +1,9 @@
+version: 2
+
+models:
+  - name: dim_ar_history
+    tests:
+      - unique:
+          column_name: ar_history_sk
+      - not_null:
+          column_name: ar_history_sk

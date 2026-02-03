@@ -10,6 +10,10 @@
 
         {{ custom_schema_name | trim }}
 
+    {%- elif target_name in ('dev_ci_cd','uat_ci_cd','main_ci_cd') -%}
+
+        {{ (custom_schema_name | trim) ~ '_CI_CD' }}
+
     {%- else -%}
 
         {{ default_schema }}

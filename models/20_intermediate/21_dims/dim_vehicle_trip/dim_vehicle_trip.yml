@@ -1,0 +1,9 @@
+version: 2
+
+models:
+  - name: dim_vehicle_trip
+    tests:
+      - unique:
+          column_name: vehicle_trip_sk
+      - not_null:
+          column_name: vehicle_trip_sk

@@ -1,0 +1,9 @@
+version: 2
+
+models:
+  - name: fact_truck_utilization_daily
+    tests:
+      - unique:
+          column_name: surrogate_key
+      - not_null:
+          column_name: surrogate_key

@@ -1,0 +1,9 @@
+version: 2
+
+models:
+  - name: dim_revenue
+    tests:
+      - unique:
+          column_name: revenue_sk
+      - not_null:
+          column_name: revenue_sk

@@ -1,0 +1,9 @@
+version: 2
+
+models:
+  - name: dim_date
+    tests:
+      - unique:
+          column_name: date_sk
+      - not_null:
+          column_name: date_sk

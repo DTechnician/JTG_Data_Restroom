@@ -1,0 +1,9 @@
+version: 2
+
+models:
+  - name: raw_navusoft__active_services_charge_rates
+    tests:
+      - unique:
+          column_name: payload_hash
+      - not_null:
+          column_name: payload_hash

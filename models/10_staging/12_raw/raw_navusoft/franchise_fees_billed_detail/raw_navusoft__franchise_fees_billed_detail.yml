@@ -1,0 +1,9 @@
+version: 2
+
+models:
+  - name: raw_navusoft__franchise_fees_billed_detail
+    tests:
+      - unique:
+          column_name: payload_hash
+      - not_null:
+          column_name: payload_hash

@@ -15,12 +15,17 @@ with date_spine as (
 final as (
 
     select
+<<<<<<< HEAD
         -- Surrogate Key
+=======
+        -- Surrogate Key (numeric-friendly YYYYMMDD)
+>>>>>>> da8821afc7bbbdfb39fbfc68c3eb6ce1bdad1e3b
         to_number(to_char(date_day, 'YYYYMMDD')) as date_sk,
 
         date_day as date,
 
         -- Basic attributes
+<<<<<<< HEAD
         year(date_day)    as year,
         quarter(date_day) as quarter,
         month(date_day)   as month,
@@ -140,10 +145,37 @@ final as (
             when date_day = current_date then true
             else false
         end as is_today
+=======
+        extract(year  from date_day) as year,
+        extract(quarter from date_day) as quarter,
+        extract(month from date_day) as month,
+        extract(day   from date_day) as day_of_month,
+
+        -- Day attributes
+        extract(dow from date_day) as day_of_week,
+        to_char(date_day, 'Day') as day_name,
+        to_char(date_day, 'Dy')  as day_name_short,
+
+        -- Month attributes
+        to_char(date_day, 'Month') as month_name,
+        to_char(date_day, 'Mon')   as month_name_short,
+
+        -- ISO / business analytics
+        weekofyear(date_day) as week_of_year,
+        extract(dayofyear from date_day) as day_of_year,
+
+        -- Flags
+        case when extract(dow from date_day) in (0,6) then true else false end as is_weekend,
+        case when date_day = current_date then true else false end as is_today
+>>>>>>> da8821afc7bbbdfb39fbfc68c3eb6ce1bdad1e3b
 
     from date_spine
 
 )
 
 select *
+<<<<<<< HEAD
 from final
+=======
+from final
+>>>>>>> da8821afc7bbbdfb39fbfc68c3eb6ce1bdad1e3b

@@ -1,0 +1,9 @@
+version: 2
+
+models:
+  - name: raw_navusoft__manifest_consolidation_batch
+    tests:
+      - unique:
+          column_name: payload_hash
+      - not_null:
+          column_name: payload_hash

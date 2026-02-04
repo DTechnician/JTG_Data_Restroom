@@ -1,0 +1,9 @@
+version: 2
+
+models:
+  - name: dim_address
+    tests:
+      - unique:
+          column_name: address_sk
+      - not_null:
+          column_name: address_sk

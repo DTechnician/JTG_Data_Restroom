@@ -1,7 +1,11 @@
 {{ config(
     materialized='incremental',
     tag='facts',
+<<<<<<< HEAD
     unique_key='trip_id',
+=======
+    unique_key='fact_sk',
+>>>>>>> da8821afc7bbbdfb39fbfc68c3eb6ce1bdad1e3b
     incremental_strategy='merge'
 ) }}
 

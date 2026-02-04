@@ -36,40 +36,12 @@ vehicle_obd as (
 vehicle_function as (
     SELECT 
 
-            vehicle_sk,
             id,
             name,
+            function as vehicle_function,
+            division as vehicle_division
+            from {{ ref('truck_function') }}
 
-            CASE
-                WHEN name ILIKE '%P&D%'
-                OR name ILIKE '%#67%'
-                OR name ILIKE '%#FL-30%'
-                OR name ILIKE '%#FL-32%'
-                OR name ILIKE '%#FL-34%'
-                OR name ILIKE '%#FL-39%'
-                THEN 'P&D'
-                ELSE 'Service'
-            END AS truck_function
-
-            FROM {{ ref('dim_vehicle') }}
-            WHERE NOT (
-                name ILIKE '# FL-33 OSMEL%'
-            OR name ILIKE '#37 SPARE TRUCK%'
-            OR name ILIKE '#unknown%'
-            OR name ILIKE 'Deactivated%'
-            OR name ILIKE 'Enterprise Rental Truck%'
-            OR name ILIKE 'G5JX-MB8-ZMB%'
-            OR name ILIKE 'GDZ2-GBK-VRC%'
-            OR name ILIKE 'GMSC-DFG-2UE%'
-            OR name ILIKE 'Old%'
-            OR name ILIKE 'Truck72%'
-            OR name ILIKE 'United rental truck%'
-            OR name ILIKE 'Z #31%'
-            OR name ILIKE 'Z Broken device%'
-            OR name ILIKE 'truck na%'
-            )
-            group by
-            vehicle_sk, id, name
 ),
 
 samsara_trip as (
@@ -80,7 +52,8 @@ samsara_trip as (
         d.name as driver_name,
         v.name as vehicle_name,
         vt.distance_meters as distance_m,
-        vf.truck_function,
+        vf.vehicle_function,
+        vf.vehicle_division,
         
         to_timestamp(start_ms, 3) as start_date,
 
@@ -109,7 +82,8 @@ samsara_trip as (
         vehicle_name,
         date(start_date) as trip_day,
         DATE_PART('week', DATEADD(day, 1, start_date)) as trip_week,
-        truck_function,
+        vehicle_function,
+        vehicle_division,
 
         SUM(distance_mi) as total_distance_mi,
         SUM(fuel_consumed_ml) as total_fuel_consump_ml,
@@ -123,7 +97,7 @@ samsara_trip as (
     on st.vehicle_id = obd.vehicle_id
     and trip_day = obd_date
     group by
-    vehicle_name, trip_day, trip_week, truck_function
+    vehicle_name, trip_day, trip_week, vehicle_function, vehicle_division
 )
 
 select
@@ -138,7 +112,8 @@ select
     a.vehicle_name,
     a.trip_day,
     a.trip_week,
-    a.truck_function,
+    a.vehicle_function,
+    a.vehicle_division,
 
     total_distance_mi,
     total_fuel_consump_ml,

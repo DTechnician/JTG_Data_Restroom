@@ -24,8 +24,4 @@
 
     ]
   )
-<<<<<<< HEAD
 }}
-=======
-}}
->>>>>>> da8821afc7bbbdfb39fbfc68c3eb6ce1bdad1e3b

@@ -3,11 +3,7 @@
     entity_name='v_query_task',
     unique_key='payload_hash',
     fields=[
-<<<<<<< HEAD
-{'name': 'account_id', 'type': 'timestamp_ntz'},
-=======
 {'name': 'account_id', 'type': 'number'},
->>>>>>> da8821afc7bbbdfb39fbfc68c3eb6ce1bdad1e3b
 {'name': 'task_id', 'type': 'number'},
 {'name': 'created_time_stamp', 'type': 'timestamp_ntz'},
 {'name': 'due_date', 'type': 'timestamp_ntz'},
@@ -24,8 +20,4 @@
 
     ]
   )
-<<<<<<< HEAD
 }}
-=======
-}}
->>>>>>> da8821afc7bbbdfb39fbfc68c3eb6ce1bdad1e3b

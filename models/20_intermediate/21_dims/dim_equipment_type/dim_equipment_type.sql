@@ -14,3 +14,4 @@ select distinct
     EQUIPMENTTYPE_NAME as equipment_type_name,
 from 
 {{ref('raw_navusoft__site_service_history')}} a
+where a.EQUIPMENTTYPE_ID is not null or equipment_type_id <> ''

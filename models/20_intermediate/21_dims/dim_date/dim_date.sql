@@ -146,8 +146,7 @@ final as (
 
 )
 
-select *
-			
+select *, 1 as is_current
 from final
 	   
 		  

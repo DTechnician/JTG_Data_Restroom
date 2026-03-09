@@ -11,115 +11,186 @@
 {% endmacro %}
 
 
-{% macro generate_dimension(
+{# 
+generate_dimension macro parameters:
+
+source              : source system name
+table_name          : dimension table name
+natural_key         : list[str]
+attributes     : list[str] (raw attributes)
+derived_attributes  : list[dict] [{name, expr}]
+foreign_keys        : list[dict] FK config
+scd_type            : currently supports only type 2
+#}
+
+{%- macro generate_dimension(
     source,
     table_name,
-    natural_key,
-    attributes,
-    scd_type=2
-) %}
+    sk_name,
+    natural_key,             
+    attributes,         
+    derived_attributes=[],   
+    foreign_keys=[],         
+    scd_type=2               
+) -%}
 
-{% if natural_key | length == 0 %}
+{# ---------------- Validations ---------------- #}
+{%- if natural_key | length == 0 -%}
     {{ exceptions.raise_compiler_error("generate_dimension requires at least one natural key") }}
-{% endif %}
+{%- endif -%}
 
-{% if attributes | length == 0 %}
-    {{ exceptions.raise_compiler_error("generate_dimension requires at least one attribute column") }}
-{% endif %}
+{%- set has_any_attr = (attributes | length) + (derived_attributes | length) + (foreign_keys | length) -%}
+{%- if has_any_attr == 0 -%}
+    {{ exceptions.raise_compiler_error("generate_dimension requires at least one attribute (base, derived, or FK)") }}
+{%- endif -%}
 
-{% set src = ref("raw_" ~ source ~ "__" ~ table_name) %}
+{# ---------------- Inputs & Derived Lists ---------------- #}
+{%- set src = ref("raw_" ~ source ~ "__" ~ table_name) -%}
+{%- set _sk = (sk_name | default(table_name ~ '_sk', true)) -%}
+
+{# derive names from structures #}
+{%- set derived_names = derived_attributes | map(attribute='name') | list -%}
+{%- set fk_names = foreign_keys | map(attribute='name') | list -%}
+{%- set all_attributes = (attributes + derived_names + fk_names) -%}
+
 
 {# -----------------------------------------
    Choose change timestamp per source
 ----------------------------------------- #}
-{% if source == 'samsara' %}
-    {% set change_ts = '_fivetran_synced' %}
-{% elif source == 'navusoft' %}
-    {% set change_ts = 'ingested_at' %}
-{% else %}
-    {% set change_ts = 'record_loaded_at' %}
-{% endif %}
+{%- if source == 'samsara' -%}
+    {%- set change_ts = '_fivetran_synced' -%}
+{%- elif source == 'navusoft' -%}
+    {%- set change_ts = 'ingested_at' -%}
+{%- else -%}
+    {%- set change_ts = 'record_loaded_at' -%}
+{%- endif -%}
 
-{% if not is_incremental() and scd_type == 2 %}
+{# -----------------------------------------
+   CTE: Raw + Derived attributes from source
+----------------------------------------- #}
+with src_raw as (
+    {%- set ns = namespace(cols=[]) -%}
+    {%- for nk in natural_key -%}{%- set ns.cols = ns.cols + [nk] -%}{%- endfor -%}
+    {%- for col in attributes -%}{%- set ns.cols = ns.cols + [col] -%}{%- endfor -%}
+    {%- for d in derived_attributes -%}{%- set ns.cols = ns.cols + [d.expr ~ ' as ' ~ d.name] -%}{%- endfor -%}
+    {%- set ns.cols = ns.cols + [change_ts ~ '::' ~ var('timestamp_type', 'timestamp_ltz') ~ ' as _change_ts'] -%}
 
--- =====================================================
--- FULL REFRESH MODE (Rebuild SCD2 History)
--- =====================================================
+    select {{ ns.cols | join(',') }} from {{ src }}
 
-with ordered as (
+)
 
+{# -----------------------------------------
+   CTE: Attach FK columns via joins to other dimensions
+   foreign_keys item schema:
+   {
+     name: 'customer_sk',       -- alias to create in this dimension
+     dim_model: 'dim_customer', -- dbt model name to ref
+     join_on: [                 -- list of {src: 'src_col', dim: 'dim_nk_col'}
+       {src: 'customer_id', dim: 'customer_id'}
+     ],
+     dim_sk: 'customer_sk',     -- optional; defaults to dim_model ~ '_sk'
+     join_type: 'left'          -- optional; 'left'|'inner' (default 'left')
+   }
+----------------------------------------- #}
+, with_fks as (
+    select
+        r.*{% if foreign_keys | length > 0 %},{% endif %}
+        {% for fk in foreign_keys %}
+            {%- set alias = "d" ~ loop.index -%}
+            {%- set dim_sk = fk.dim_sk if fk.dim_sk is defined else (fk.dim_model ~ "_sk") -%}
+            {{ alias }}.{{ dim_sk }} as {{ fk.name }}{{ "," if not loop.last else "" }}
+        {% endfor %}
+    from src_raw r
+    {% for fk in foreign_keys %}
+        {%- set alias = "d" ~ loop.index -%}
+        {{ (fk.join_type | default('left')) | upper }} join {{ ref(fk.dim_model) }} {{ alias }}
+          on {{ alias }}.is_current = true
+         {% if fk.join_on is not defined or fk.join_on | length == 0 %}
+            {{ exceptions.raise_compiler_error("Each foreign_keys item must define a non-empty join_on list with {src, dim}") }}
+         {% endif %}
+         {% for cond in fk.join_on %}
+           and r.{{ cond.src }} = {{ alias }}.{{ cond.dim }}
+         {% endfor %}
+    {% endfor %}
+)
+
+{# -----------------------------------------
+   FULL REFRESH MODE (Rebuild SCD2 History)
+----------------------------------------- #}
+{%- if not is_incremental() and scd_type == 2 -%}
+
+, ordered as (
     select
         {% for nk in natural_key %} {{ nk }}, {% endfor %}
         {% for col in attributes %} {{ col }}, {% endfor %}
+        {% for nm in derived_names %} {{ nm }}, {% endfor %}
+        {% for fkcol in fk_names %} {{ fkcol }}, {% endfor %}
 
-        {{ change_ts }}::{{ var('timestamp_type', 'timestamp_ltz') }} as valid_from,
-
-        lead({{ change_ts }}) over (
+        _change_ts as valid_from,
+        lead(_change_ts) over (
             partition by {% for nk in natural_key %} {{ nk }}{% if not loop.last %}, {% endif %}{% endfor %}
-            order by {{ change_ts }} asc
-        )::{{ var('timestamp_type', 'timestamp_ltz') }} as valid_to
+            order by _change_ts asc
+        ) as valid_to
+    from with_fks
+)
 
-    from {{ src }}
-
-),
-
-final as (
-
+, final as (
     select
-        {{ generate_surrogate_key([generate_surrogate_key(natural_key), generate_surrogate_key(attributes)]) }} as {{ table_name }}_sk,
+        {{ generate_surrogate_key([ generate_surrogate_key(natural_key), generate_surrogate_key(all_attributes) ]) }} as {{_sk}},
 
         {% for nk in natural_key %} {{ nk }}, {% endfor %}
         {% for col in attributes %} {{ col }}, {% endfor %}
+        {% for nm in derived_names %} {{ nm }}, {% endfor %}
+        {% for fkcol in fk_names %} {{ fkcol }}, {% endfor %}
 
-        {{ generate_surrogate_key(attributes) }} as attributes_hash,
+        {{ generate_surrogate_key(all_attributes) }} as attributes_hash,
 
-        valid_from,
-        valid_to,
+        valid_from::{{ var('timestamp_type', 'timestamp_ltz') }} as valid_from,
+        valid_to::{{ var('timestamp_type', 'timestamp_ltz') }} as valid_to,
+
         {{ ts_now() }} as record_loaded_at,
         case when valid_to is null then true else false end as is_current
-
-
     from ordered
-
 )
 
 select * from final
 
+{# -----------------------------------------
+   INCREMENTAL MODE (SCD2)
+----------------------------------------- #}
 {% else %}
 
--- =====================================================
--- INCREMENTAL MODE (SCD2)
--- =====================================================
-
-with source_data as (
-
+, source_data as (
     select *
     from (
         select
             {% for nk in natural_key %} {{ nk }}, {% endfor %}
             {% for col in attributes %} {{ col }}, {% endfor %}
+            {% for nm in derived_names %} {{ nm }}, {% endfor %}
+            {% for fkcol in fk_names %} {{ fkcol }}, {% endfor %}
 
             {{ generate_surrogate_key(natural_key) }} as natural_key_hash,
-            {{ generate_surrogate_key(attributes) }} as attributes_hash,
+            {{ generate_surrogate_key(all_attributes) }} as attributes_hash,
 
             {{ ts_now() }} as record_loaded_at,
 
             row_number() over (
                 partition by {% for nk in natural_key %} {{ nk }}{% if not loop.last %}, {% endif %}{% endfor %}
-                order by {{ change_ts }} desc
+                order by _change_ts desc
             ) as rn
-        from {{ src }}
+        from with_fks
     ) t
     where rn = 1
 )
 
 , prepared as (
-
     select
-        {{ generate_surrogate_key(['natural_key_hash', 'attributes_hash']) }} as {{ table_name }}_sk,
+        {{ generate_surrogate_key(['natural_key_hash', 'attributes_hash']) }} as {{_sk}},
 
         {% for nk in natural_key %} {{ nk }}, {% endfor %}
         {% for col in attributes %} {{ col }}, {% endfor %}
+        {% for nm in derived_names %} {{ nm }}, {% endfor %}
+        {% for fkcol in fk_names %} {{ fkcol }}, {% endfor %}
 
         attributes_hash,
         record_loaded_at::{{ var('timestamp_type', 'timestamp_ltz') }} as record_loaded_at,
@@ -130,11 +201,13 @@ with source_data as (
 )
 
 , current_dim as (
-
     select
-        {{ table_name }}_sk,
+        {{_sk}},
+
         {% for nk in natural_key %} {{ nk }}, {% endfor %}
         {% for col in attributes %} {{ col }}, {% endfor %}
+        {% for nm in derived_names %} {{ nm }}, {% endfor %}
+        {% for fkcol in fk_names %} {{ fkcol }}, {% endfor %}
 
         attributes_hash as curr_attributes_hash,
 
@@ -148,11 +221,13 @@ with source_data as (
 )
 
 , expired as (
-
     select
-        curr.{{ table_name }}_sk,
+        curr.{{_sk}},
+
         {% for nk in natural_key %} curr.{{ nk }}, {% endfor %}
         {% for col in attributes %} curr.{{ col }}, {% endfor %}
+        {% for nm in derived_names %} curr.{{ nm }}, {% endfor %}
+        {% for fkcol in fk_names %} curr.{{ fkcol }}, {% endfor %}
 
         curr.curr_attributes_hash as attributes_hash,
         curr.record_loaded_at,
@@ -166,7 +241,6 @@ with source_data as (
 )
 
 , prepared_new as (
-
     select *
     from prepared p
     where not exists (
@@ -185,7 +259,6 @@ select * from expired
 {% endif %}
 
 {% endmacro %}
-
 
 --------------------------------------------------------
 

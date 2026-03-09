@@ -6,7 +6,6 @@ with
     dim_route as (
         select *
         from {{ref('dim_route')}}
-        group by all
     ),
     
     dim_service_code as (
@@ -18,10 +17,25 @@ with
         select *
         from {{ref('dim_equipment_type')}}
     ),
+    
+    dim_line_of_business as (
+        select *
+        from {{ref('dim_line_of_business')}}
+    ),
+
+    dim_date as (
+        select *
+        from {{ref('dim_date')}}
+    ),
 
     dim_site as (
         select *
         from {{ref('dim_site')}}
+    ),
+
+    dim_account as (
+        select *
+        from {{ref('dim_account')}}
     ),
 
     dim_site_division as (
@@ -70,7 +84,7 @@ with
         select 
             --DIM SK KEYS--
             s.account_and_site_sk site_sk,
-            a.account_and_site_sk account_sk,
+            a.account_sk account_sk,
             r.route_key,
             wt.work_type_sk ,
             d.driver_sk,

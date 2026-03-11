@@ -14,15 +14,11 @@
 		"account_id",
         "contact_id",
         "driver_id",
-        "equipment_type_id",
         "exception_reason_code",
-        "lob_id",
         "material_type_id",
         "posted_status_name",
         "route_id",
-        "servicecode_id",
         "serviceregion_id",
-        "site_id",
         "siteservice_id",
         "status",
         "truck_id",
@@ -34,7 +30,10 @@
         "quantity"
 	],
     derived_attributes = [
-        { 'name': 'missed_services',  'expr': "case  when status_text not in ('Cancelled','Service Completed') then quantity else null end" }
+        { 'name': 'missed_services',  'expr': "case  when status_text not in ('Cancelled','Service Completed') then quantity else null end" },
+        { 'name': 'calculated_timestamp_duration',  'expr': "datediff(minute ,calculated_start_timestamp, calculated_end_timestamp)" },
+        { 'name': 'override_timestamp_duration',  'expr': "datediff(minute ,start_timestamp_override, end_timestamp_override)" },
+        { 'name': 'geofence_timestamp_duration',  'expr': "datediff(minute ,geofence_start_time_stamp, geofence_start_time_stamp)" }
     ],
     foreign_keys = [
         {

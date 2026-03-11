@@ -3,11 +3,6 @@
 
 with 
 --set up dimensions--
-    dim_route as (
-        select *
-        from {{ref('dim_work_order')}}
-    ),
-
     stg_navusoft_work_order as (
         select * 
         from {{ref('raw_navusoft__work_order')}}
@@ -16,7 +11,7 @@ with
     stg_navusoft_site_service_history as (
         select *,
         sfm.sf_value,
-        coalesce(coalesce(rate,0)/sfm.sf_value, 0) as calculated_revenue,
+        coalesce(coalesce(rate,0)/quantity/sfm.sf_value, 0)::number(12,2) as calculated_revenue,
         /* duration */
         case
             when start_date is not null
@@ -29,26 +24,24 @@ with
         left join {{ref('service_frequency_mapping')}} sfm on ssh.service_frequency = sfm.service_frequency
     ),
 
+    dim_site_division as (select * from {{ref('dim_site_division')}}),
+    dim_work_order as (select * from {{ref('dim_work_order')}}),
+
     
     final as (
         select 
             --DIM SK KEYS--
             dwo.work_order_sk,
 
-            --date measures
-            datediff(minute ,calculated_start_timestamp, calculated_end_timestamp) as calculated_timestamp_duration,
-            datediff(minute ,start_timestamp_override, end_timestamp_override) as override_timestamp_duration,
-            datediff(minute ,geofence_start_time_stamp, geofence_start_time_stamp) as geofence_timestamp_duration,
-
             --financials
             act.calculated_revenue as revenue,
-            (coalesce(calculated_timestamp_duration,0)*sd.division_hourly_rate)/60 as labor_cost,
+            (coalesce(dwo.calculated_timestamp_duration,0)*sd.division_hourly_rate)/60 as labor_cost,
             act.calculated_revenue-labor_cost as profit_margin,
         
         from stg_navusoft_work_order wo
         join dim_work_order dwo on wo.workordernumber = dwo.workordernumber
         left join stg_navusoft_site_service_history act on wo.siteservice_id = act.service_id
-        left join dim_site_division sd on wo.division_id =  sd.division_id
+        left join dim_site_division sd on wo.division_id = sd.site_division_id
         where act.calculated_revenue <> 0
     )
 

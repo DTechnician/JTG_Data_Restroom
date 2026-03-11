@@ -8,6 +8,7 @@
 
 {{ generate_dimension(
     source = "navusoft",
+    sk_name = "site_sk",
     table_name = "account_and_site",
     natural_key = ["site_id"],
     attributes = [ 
@@ -19,7 +20,6 @@
         "site_zip",
         "site_county",
         "site_division_id",
-        "site_division_name",
         "site_serviceregion_id",
         "site_service_region_name",
 
@@ -58,6 +58,17 @@
         "site_status_effective_date",
         "site_status",
         "site_status_text",
+    ],
+    foreign_keys = [
+        {
+            'name': 'site_division_sk',
+            'dim_model': 'dim_site_division',
+            'dim_sk': 'site_division_sk',
+            'join_type': 'left',
+            'join_on': [
+                {'src': 'site_division_id', 'dim': 'site_division_id'}
+            ]
+        },
     ],
     scd_type = 2
 ) }}

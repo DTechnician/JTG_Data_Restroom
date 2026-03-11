@@ -1,17 +1,26 @@
 {{ config(
     materialized='incremental',
     tag='dims',
-    unique_key='equipment_sk',
+    unique_key='equipment_type_sk',
     incremental_strategy='merge',
     merge_update_columns=['is_current', 'valid_to']
 ) }}
 
-select distinct
-    {{ generate_surrogate_key([
-                'a.EQUIPMENTTYPE_ID' 
-    ]) }} as equipment_type_sk ,
-    EQUIPMENTTYPE_ID as equipment_type_id,
-    EQUIPMENTTYPE_NAME as equipment_type_name,
-from 
-{{ref('raw_navusoft__site_service_history')}} a
-where a.EQUIPMENTTYPE_ID is not null or equipment_type_id <> ''
+{{ generate_dimension(
+    source = "navusoft",
+    sk_name = "equipment_type_sk",
+    table_name = "site_service_history",
+    natural_key = ["EQUIPMENTTYPE_ID"],
+    attributes = [
+    ],
+    derived_attributes = [
+        { 'name': 'equipment_type_name',
+			'expr': "equipmenttype_name" 
+		},
+		{ 'name': 'EQUIPMENT_TYPE_ID',
+			'expr': "EQUIPMENTTYPE_ID" 
+		}
+    ],
+    dedupe_strategy = 'latest',
+    scd_type = 2
+) }}

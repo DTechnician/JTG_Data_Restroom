@@ -83,15 +83,15 @@ with
     final as (
         select 
             --DIM SK KEYS--
-            s.account_and_site_sk site_sk,
+            s.site_sk site_sk,
             a.account_sk account_sk,
-            r.route_key,
+            r.route_sk,
             wt.work_type_sk ,
             d.driver_sk,
             v.vehicle_sk,
             sc.service_code_sk,
             et.equipment_type_sk,
-            sd.division_key,
+            sd.site_division_sk,
             lob.lob_sk,
             comp_dt.date_sk as completion_date_sk,
             sched_dt.date_sk as scheduled_date_sk,
@@ -148,7 +148,7 @@ with
         left join dim_service_code sc on wo.SERVICECODE_ID = sc.service_code_id
         left join dim_equipment_type et on wo.equipment_type_id = et.equipment_type_id
         left join dim_line_of_business lob on wo.lob_id = lob.lob_id
-        left join dim_site_division sd on wo.division_id =  sd.division_id
+        left join dim_site_division sd on wo.division_id =  sd.site_division_id
         left join dim_date comp_dt on wo.completion_date = comp_dt.date
         left join dim_date sched_dt on wo.scheduled_date = sched_dt.date
     )

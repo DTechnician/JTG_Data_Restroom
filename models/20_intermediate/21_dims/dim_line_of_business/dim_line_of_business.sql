@@ -6,11 +6,14 @@
     merge_update_columns=['is_current', 'valid_to']
 ) }}
 
-select distinct
-    {{ generate_surrogate_key([
-                'a.lob_id' 
-    ]) }} as lob_sk ,
-    lob_id,
-    lob_name,
-from 
-{{ref('raw_navusoft__site_service_history')}} a
+{{ generate_dimension(
+    source = "navusoft",
+    sk_name = "lob_sk",
+    table_name = "site_service_history",
+    natural_key = ["lob_id"],
+    attributes = [ 
+		"lob_name"
+    ],    
+    dedupe_strategy = 'latest',
+    scd_type = 2
+) }}

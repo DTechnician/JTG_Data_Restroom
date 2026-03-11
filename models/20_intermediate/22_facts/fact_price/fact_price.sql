@@ -3,11 +3,6 @@
 
 with 
 --set up dimensions--
-    dim_route as (
-        select *
-        from {{ref('dim_work_order')}}
-    ),
-
     stg_navusoft_work_order as (
         select * 
         from {{ref('raw_navusoft__work_order')}}
@@ -28,18 +23,12 @@ with
         from {{ref('raw_navusoft__site_service_history')}} ssh
         left join {{ref('service_frequency_mapping')}} sfm on ssh.service_frequency = sfm.service_frequency
     ),
+    dim_work_order as (select * from {{ref('dim_work_order')}}),
     
     final as (
         select 
             --DIM SK KEYS--
             dwo.work_order_sk,
-            comp_dt.date_sk as completion_date_sk,
-            sched_dt.date_sk as scheduled_date_sk,
-
-            --date measures
-            datediff(minute ,calculated_start_timestamp, calculated_end_timestamp) as calculated_timestamp_duration,
-            datediff(minute ,start_timestamp_override, end_timestamp_override) as override_timestamp_duration,
-            datediff(minute ,geofence_start_time_stamp, geofence_start_time_stamp) as geofence_timestamp_duration,
 
             --financials
             -- --price
@@ -49,9 +38,6 @@ with
         from stg_navusoft_work_order wo
         join dim_work_order dwo on wo.workordernumber = dwo.workordernumber
         left join stg_navusoft_site_service_history act on wo.siteservice_id = act.service_id
-        left join dim_site_division sd on wo.division_id =  sd.division_id
-        left join dim_date comp_dt on wo.completion_date = comp_dt.date
-        left join dim_date sched_dt on wo.scheduled_date = sched_dt.date
         where rate <> 0
     )
 

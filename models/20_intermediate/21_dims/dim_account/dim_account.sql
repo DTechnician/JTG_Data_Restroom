@@ -8,7 +8,7 @@
 
 {{ generate_dimension(
     source = "navusoft",
-    table_name = "account",
+    table_name = "account_and_site",
     sk_name = "account_sk",
     natural_key = ["account_id"],
     attributes = [ 

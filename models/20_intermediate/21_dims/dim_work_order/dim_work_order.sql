@@ -125,11 +125,11 @@
         },
         {
             'name': 'vehicle_sk',
-            'dim_model': 'dim_vehicle_navusoft',
+            'dim_model': 'bridge_navusoft__vehicle',
             'dim_sk': 'vehicle_sk',
             'join_type': 'left',
             'join_on': [
-                {'src': 'truck_id', 'dim': 'truck_id'}
+                {'src': 'truck_id', 'dim': 'navusoft_vehicle_id'}
             ]
         },
 

@@ -1,0 +1,26 @@
+version: 2
+
+sources:
+  - name: adp
+    database: db_landing_adp          # adjust if different
+    schema: adp_workforce_now                 # or the fivetran-generated schema
+    tables:
+      - name: business_communication
+      - name: worker_base_remuneration
+      - name: person_government_id
+      - name: person_history
+      - name: work_assignment_history
+      - name: other_personal_address
+      - name: worker_assigned_organizational_unit
+      - name: person_social_insurance_program
+      - name: worker
+      - name: worker_assigned_location
+      - name: worker_report_to
+      - name: organizational_unit
+      - name: worker_group
+      - name: classification
+      - name: location
+      - name: person_communication
+      - name: worker_home_organizational_unit
+      - name: worker_classification
+      - name: groups

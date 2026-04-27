@@ -1,0 +1,9 @@
+version: 2
+
+models:
+  - name: dim_site_service_history
+    tests:
+      - unique:
+          column_name: site_service_history_sk
+      - not_null:
+          column_name: site_service_history_sk

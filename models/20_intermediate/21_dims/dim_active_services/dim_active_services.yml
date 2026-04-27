@@ -1,0 +1,9 @@
+version: 2
+
+models:
+  - name: dim_active_services
+    tests:
+      - unique:
+          column_name: active_services_sk
+      - not_null:
+          column_name: active_services_sk

@@ -1,0 +1,33 @@
+version: 2
+
+models:
+  - name: fact_price
+    description: |
+      Fact table capturing price-related measures at the work order grain. Includes rate and perunitrate for each work order.
+    columns:
+      - name: work_order_sk
+        description: |
+          Surrogate key for the work order. Serves as the grain of the fact row and can be joined to the corresponding dimension record.
+        tags: [key, work_order]
+        tests:
+          - not_null
+          # Uncomment and update the "to" value to enforce referential integrity once the dimension exists
+          # - relationships:
+          #     to: ref('dim_work_order')
+          #     field: work_order_sk
+
+      - name: rate
+        description: |
+          Total Rate for the work order in the model's base currency.
+          Calculation: Diretly pulled from rate(ref:workorder)
+        tags: [metric, revenue]
+        #tests:
+        #  - not_null
+
+      - name: perunitrate
+        description: |
+          Total Rate per Unit to the work order in the model's base currency.
+          Calculation: Diretly pulled from perunitrate(ref:workorder)
+        tags: [metric, cost, labor]
+        #tests:
+        #  - not_null

@@ -1,0 +1,44 @@
+name: Trigger dbt Cloud Jobs
+
+on:
+  pull_request:
+    branches: [ main, uat ]
+  push:
+    branches: [ dev, uat, main ]
+
+jobs:
+  dbt-dev:
+    name: CI Validation (Dev)
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/dev'
+    steps:
+      - name: Trigger dbt Dev Job
+        run: |
+          curl -X POST https://cloud.getdbt.com/api/v2/accounts/${{ secrets.DBT_ACCOUNT_ID }}/jobs/${{ secrets.DBT_DEV_JOB_ID }}/run/ \
+          -H "Authorization: Token ${{ secrets.DBT_API_KEY }}" \
+          -H "Content-Type: application/json" \
+          -d '{"cause": "Triggered by GitHub Actions (Dev branch)"}'
+
+  dbt-uat:
+    name: Deploy to UAT
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/uat'
+    steps:
+      - name: Trigger dbt UAT Job
+        run: |
+          curl -X POST https://cloud.getdbt.com/api/v2/accounts/${{ secrets.DBT_ACCOUNT_ID }}/jobs/${{ secrets.DBT_UAT_JOB_ID }}/run/ \
+          -H "Authorization: Token ${{ secrets.DBT_API_KEY }}" \
+          -H "Content-Type: application/json" \
+          -d '{"cause": "Triggered by GitHub Actions (UAT branch)"}'
+
+  dbt-prod:
+    name: Deploy to Production
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'
+    steps:
+      - name: Trigger dbt Prod Job
+        run: |
+          curl -X POST https://cloud.getdbt.com/api/v2/accounts/${{ secrets.DBT_ACCOUNT_ID }}/jobs/${{ secrets.DBT_PROD_JOB_ID }}/run/ \
+          -H "Authorization: Token ${{ secrets.DBT_API_KEY }}" \
+          -H "Content-Type: application/json" \
+          -d '{"cause": "Triggered by GitHub Actions (Main branch)"}'

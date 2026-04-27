@@ -1,0 +1,10 @@
+version: 2
+
+models:
+  - name: raw_samsara__address
+    description: ""
+    tests:
+      - unique:
+          column_name: id
+      - not_null:
+          column_name: id

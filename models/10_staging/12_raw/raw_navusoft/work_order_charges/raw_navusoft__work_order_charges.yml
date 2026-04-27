@@ -1,0 +1,9 @@
+version: 2
+
+models:
+  - name: raw_navusoft__work_order_charges
+    tests:
+      - unique:
+          column_name: payload_hash
+      - not_null:
+          column_name: payload_hash

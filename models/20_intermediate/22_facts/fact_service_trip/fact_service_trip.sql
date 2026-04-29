@@ -31,9 +31,6 @@ with
         select 
             sd.work_order_sk,
             sd.siteservice_id,
-            sd.vehicle_sk,
-            tm.vehicle_map_name,
-            sd.scheduled_date,
                 /* allocation divisor */
                 count(sd.work_order_sk) over (
                     partition by

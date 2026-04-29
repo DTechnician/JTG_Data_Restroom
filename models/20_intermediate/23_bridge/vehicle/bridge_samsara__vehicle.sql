@@ -17,7 +17,7 @@ with samsara_raw as (
             )
         ) as vehicle_map_name
 
-    from DB_JTG_DEV.dbt_dtechnician.raw_samsara__vehicle
+    from {{ref('raw_samsara__vehicle')}}
     where id is not null and name is not null
 ), dim as (
     select
@@ -27,7 +27,7 @@ with samsara_raw as (
         valid_to,
         is_current,
         record_loaded_at
-    from DB_JTG_DEV.dbt_dtechnician.dim_vehicle_norm
+    from {{ref('dim_vehicle')}}
     where vehicle_map_name is not null
 )
 select

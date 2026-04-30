@@ -1,6 +1,6 @@
 {{ config(
     materialized = 'table',
-    tag = 'facts'
+    tags=['facts']
 ) }}
 
 with

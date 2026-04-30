@@ -1,3 +1,8 @@
+{{ config(
+    materialized='table',
+    tags=['facts']
+    ) }}
+    
 with 
     fact_vehicle_trip as (select * from {{ref('fact_vehicle_trip')}}),
 

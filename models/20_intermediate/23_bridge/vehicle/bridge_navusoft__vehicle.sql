@@ -1,5 +1,6 @@
 {{ config(
     materialized = 'table',
+    tags=['bridge'],
     unique_key   = ['navusoft_vehicle_id', 'navusoft_vehicle_name', 'vehicle_sk', 'valid_from']
 ) }}
 

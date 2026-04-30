@@ -50,7 +50,7 @@ samsara_trip as (
         vt.driver_id,
         vt.vehicle_id,
         d.name as driver_name,
-        v.name as vehicle_name,
+        v.samsara_vehicle_name as vehicle_name,
         vt.distance_meters as distance_m,
         vf.vehicle_function,
         vf.vehicle_division,
@@ -68,8 +68,8 @@ samsara_trip as (
         (fuel_consumed_ml / 3785.41) as fuel_consumed_gal
 
     from {{ ref('dim_vehicle_trip') }} vt
-    left join {{ ref('dim_vehicle') }} v
-        on vt.vehicle_id = v.id
+    left join {{ ref('bridge_samsara__vehicle') }} v
+        on vt.vehicle_id = v.samsara_vehicle_id
     left join {{ ref('dim_driver') }} d
         on vt.driver_id = d.id
     left join vehicle_function vf
@@ -124,4 +124,5 @@ select
 from aggregated a
 left join {{ ref('dim_date') }} s_dt
 on trip_day = s_dt.date
+where surrogate_key is not null
 order by trip_day desc

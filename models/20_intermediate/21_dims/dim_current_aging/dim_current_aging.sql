@@ -1,6 +1,6 @@
 {{ config(
     materialized='incremental',
-    tag='dims',
+    tags=['dims'],
     unique_key='current_aging_sk',
     incremental_strategy='merge',
     merge_update_columns=['is_current', 'valid_to']

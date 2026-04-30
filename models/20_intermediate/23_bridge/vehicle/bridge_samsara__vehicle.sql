@@ -1,5 +1,6 @@
 {{ config(
     materialized = 'table',
+    tags=['bridge'],
     unique_key   = ['samsara_vehicle_id', 'samsara_vehicle_name', 'vehicle_sk', 'valid_from']
 ) }}
 

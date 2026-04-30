@@ -8,7 +8,6 @@ models:
       - name: work_order_sk
         description: |
           Surrogate key for the work order. Serves as the grain of the fact row and can be joined to the corresponding dimension record.
-        tags: [key, work_order]
         tests:
           - not_null
           # Uncomment and update the "to" value to enforce referential integrity once the dimension exists
@@ -20,7 +19,6 @@ models:
         description: |
           Total recognized revenue amount for the work order in the model's base currency.
           Calculation: Rate/Quantity/Service_Frequnce_Value(ref:service_frequency_mapping)
-        tags: [metric, revenue]
         #tests:
         #  - not_null
 
@@ -28,7 +26,6 @@ models:
         description: |
           Total direct labor cost attributed to the work order in the model's base currency.
           Calculation: Calculated TimeStamp Duration(ref:dim_work_order) * HourlyRate (ref:dim_site_division) / 60(min/hour)
-        tags: [metric, cost, labor]
         #tests:
         #  - not_null
 
@@ -37,6 +34,5 @@ models:
           Profit margin represented as a decimal ratio for the work order.
           Calculation: (revenue - labor_cost)
           Values usually range from 0.0 to 1.0, but can be negative for loss‑making orders.
-        tags: [kpi, margin]
         #tests:
         #  - not_null

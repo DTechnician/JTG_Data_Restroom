@@ -57,7 +57,3 @@ models:
 
 flags:
   require_generic_test_arguments_property: true
-
-seeds:
-  jtg_data_restroom:
-    driver_title_mapping:

@@ -35,40 +35,27 @@ with
     final as (
         select 
             sd.work_order_sk,
-            sd.siteservice_id,
                 /* allocation divisor */
                 count(sd.work_order_sk) over (
                     partition by
-                        sd.siteservice_id,
                         sd.vehicle_sk,
                         sd.scheduled_date
-                ) as workorder_cnt,
-
+                ) as workorder_count,
+                /* total measures*/
+                tm.distance_meters,
+                tm.distance_miles,
+                tm.fuel_consumed_ml,
+                tm.fuel_consumed_liters,
                 /* allocated measures */
-                tm.distance_meters 
-                    / count(sd.work_order_sk) over (
-                        partition by sd.siteservice_id, sd.vehicle_sk, sd.scheduled_date
-                    ) as allocated_distance_meters,
-
-                tm.distance_miles 
-                    / count(sd.work_order_sk) over (
-                        partition by sd.siteservice_id, sd.vehicle_sk, sd.scheduled_date
-                    ) as allocated_distance_miles,
-
-                tm.fuel_consumed_ml 
-                    / count(sd.work_order_sk) over (
-                        partition by sd.siteservice_id, sd.vehicle_sk, sd.scheduled_date
-                    ) as allocated_fuel_consumed_ml,
-
-                tm.fuel_consumed_liters 
-                    / count(sd.work_order_sk) over (
-                        partition by sd.siteservice_id, sd.vehicle_sk, sd.scheduled_date
-                    ) as allocated_fuel_consumed_liters
+                tm.distance_meters / workorder_count as allocated_distance_meters,
+                tm.distance_miles / workorder_count as allocated_distance_miles,
+                tm.fuel_consumed_ml / workorder_count as allocated_fuel_consumed_ml,
+                tm.fuel_consumed_liters / workorder_count as allocated_fuel_consumed_liters
                     
         from  service_details sd  
-        left join trip_measures tm 
+        join trip_measures tm 
             on sd.scheduled_date = tm.trip_start_date
-            and sd.vehicle_sk = sd.vehicle_sk
+            and sd.vehicle_sk = tm.vehicle_sk
         order by tm.vehicle_map_name, sd.scheduled_date
     )
  

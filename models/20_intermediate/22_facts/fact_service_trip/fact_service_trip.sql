@@ -41,11 +41,11 @@ with
                         sd.vehicle_sk,
                         sd.scheduled_date
                 ) as workorder_count,
-                /* total measures*/
-                tm.distance_meters,
-                tm.distance_miles,
-                tm.fuel_consumed_ml,
-                tm.fuel_consumed_liters,
+                -- /* total measures*/
+                -- tm.distance_meters,
+                -- tm.distance_miles,
+                -- tm.fuel_consumed_ml,
+                -- tm.fuel_consumed_liters,
                 /* allocated measures */
                 tm.distance_meters / workorder_count as allocated_distance_meters,
                 tm.distance_miles / workorder_count as allocated_distance_miles,

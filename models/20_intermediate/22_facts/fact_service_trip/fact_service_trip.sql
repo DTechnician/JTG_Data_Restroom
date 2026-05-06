@@ -11,6 +11,8 @@ with
     bridge_navusoft__vehicle as (select * from {{ref('bridge_navusoft__vehicle')}}),
 
     dim_work_order as (select * from {{ref('dim_work_order')}}),
+
+    dim_vehicle as (select * from {{ref('dim_vehicle')}}),
     
     trip_measures as (
         select 
@@ -28,8 +30,9 @@ with
     ),
 
     service_details as (
-        select work_order_sk, siteservice_id, scheduled_date, vehicle_sk
+        select work_order_sk, v.vehicle_map_name, scheduled_date, wo.vehicle_sk
         from dim_work_order wo
+        join dim_vehicle v on wo.vehicle_sk = v.vehicle_sk
     ),
 
     final as (

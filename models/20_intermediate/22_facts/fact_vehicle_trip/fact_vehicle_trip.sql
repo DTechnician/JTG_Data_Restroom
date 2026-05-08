@@ -1,6 +1,6 @@
 {{ config(
     materialized='incremental',
-    tag='facts',
+    tags=['facts'],
     unique_key='fact_sk',
     incremental_strategy='merge'
 ) }}

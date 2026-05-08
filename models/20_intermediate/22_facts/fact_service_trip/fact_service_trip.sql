@@ -1,3 +1,8 @@
+{{ config(
+    materialized='table',
+    tags=['facts']
+    ) }}
+    
 with 
     fact_vehicle_trip as (select * from {{ref('fact_vehicle_trip')}}),
 
@@ -6,6 +11,8 @@ with
     bridge_navusoft__vehicle as (select * from {{ref('bridge_navusoft__vehicle')}}),
 
     dim_work_order as (select * from {{ref('dim_work_order')}}),
+
+    dim_vehicle as (select * from {{ref('dim_vehicle')}}),
     
     trip_measures as (
         select 
@@ -23,47 +30,35 @@ with
     ),
 
     service_details as (
-        select work_order_sk, siteservice_id, scheduled_date, vehicle_sk
+        select work_order_sk, v.vehicle_map_name, scheduled_date, wo.vehicle_sk
         from dim_work_order wo
+        join dim_vehicle v on wo.vehicle_sk = v.vehicle_sk
     ),
 
     final as (
         select 
             sd.work_order_sk,
-            sd.siteservice_id,
                 /* allocation divisor */
                 count(sd.work_order_sk) over (
                     partition by
-                        sd.siteservice_id,
                         sd.vehicle_sk,
                         sd.scheduled_date
-                ) as workorder_cnt,
-
+                ) as workorder_count,
+                -- /* total measures*/
+                -- tm.distance_meters,
+                -- tm.distance_miles,
+                -- tm.fuel_consumed_ml,
+                -- tm.fuel_consumed_liters,
                 /* allocated measures */
-                tm.distance_meters 
-                    / count(sd.work_order_sk) over (
-                        partition by sd.siteservice_id, sd.vehicle_sk, sd.scheduled_date
-                    ) as allocated_distance_meters,
-
-                tm.distance_miles 
-                    / count(sd.work_order_sk) over (
-                        partition by sd.siteservice_id, sd.vehicle_sk, sd.scheduled_date
-                    ) as allocated_distance_miles,
-
-                tm.fuel_consumed_ml 
-                    / count(sd.work_order_sk) over (
-                        partition by sd.siteservice_id, sd.vehicle_sk, sd.scheduled_date
-                    ) as allocated_fuel_consumed_ml,
-
-                tm.fuel_consumed_liters 
-                    / count(sd.work_order_sk) over (
-                        partition by sd.siteservice_id, sd.vehicle_sk, sd.scheduled_date
-                    ) as allocated_fuel_consumed_liters
+                tm.distance_meters / workorder_count as allocated_distance_meters,
+                tm.distance_miles / workorder_count as allocated_distance_miles,
+                tm.fuel_consumed_ml / workorder_count as allocated_fuel_consumed_ml,
+                tm.fuel_consumed_liters / workorder_count as allocated_fuel_consumed_liters
                     
         from  service_details sd  
-        left join trip_measures tm 
+        join trip_measures tm 
             on sd.scheduled_date = tm.trip_start_date
-            and sd.vehicle_sk = sd.vehicle_sk
+            and sd.vehicle_sk = tm.vehicle_sk
         order by tm.vehicle_map_name, sd.scheduled_date
     )
  

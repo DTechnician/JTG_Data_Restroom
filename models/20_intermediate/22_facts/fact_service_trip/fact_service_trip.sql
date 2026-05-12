@@ -20,6 +20,8 @@ with
             bsv.vehicle_map_name,
             bsv.samsara_vehicle_name,
             to_date(to_timestamp(vt.start_ms / 1000)) trip_start_date, 
+            sum(datediff(min,to_timestamp(vt.start_ms / 1000), to_timestamp(vt.end_ms / 1000))) as minutes_taken,
+            (minutes_taken/60)::numeric(18,2) as hours_taken,
             sum(vt.distance_meters) distance_meters,
             sum(vt.distance_meters* 0.000621371) distance_miles,           
             sum(vt.fuel_consumed_ml) fuel_consumed_ml,
@@ -50,6 +52,8 @@ with
                 -- tm.fuel_consumed_ml,
                 -- tm.fuel_consumed_liters,
                 /* allocated measures */
+                tm.minutes_taken / workorder_count as allocated_minutes_taken,
+                tm.hours_taken / workorder_count as allocated_hours_taken,
                 tm.distance_meters / workorder_count as allocated_distance_meters,
                 tm.distance_miles / workorder_count as allocated_distance_miles,
                 tm.fuel_consumed_ml / workorder_count as allocated_fuel_consumed_ml,

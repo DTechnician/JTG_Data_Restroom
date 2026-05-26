@@ -37,6 +37,7 @@
     derived_attributes = [
         { 'name': 'missed_services',  'expr': "case  when status in (0,1,2) or scheduled_date <> completion_date then quantity else null end" },
         { 'name': 'completed_services',  'expr': "case  when status in (3) then quantity else null end" },
+        { 'name': 'late_services',  'expr': "case  when status in (3) then quantity else null end" },
         { 'name': 'calculated_timestamp_duration',  'expr': "datediff(minute ,calculated_start_timestamp, calculated_end_timestamp)" },
         { 'name': 'override_timestamp_duration',  'expr': "datediff(minute ,start_timestamp_override, end_timestamp_override)" },
         { 'name': 'geofence_timestamp_duration',  'expr': "datediff(minute ,geofence_start_time_stamp, geofence_start_time_stamp)" }

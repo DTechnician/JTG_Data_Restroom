@@ -24,3 +24,9 @@ sources:
       - name: worker_home_organizational_unit
       - name: worker_classification
       - name: groups
+
+  - name: adp_custom
+    database: db_landing_adp          # adjust if different
+    schema: connector_sdk_adp                 # or the fivetran-generated schema
+    tables:
+      - name: timecards

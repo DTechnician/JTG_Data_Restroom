@@ -116,11 +116,11 @@
         },
         {
             'name': 'driver_sk',
-            'dim_model': 'dim_driver_navusoft',
+            'dim_model': 'bridge_navusoft__driver',
             'dim_sk': 'driver_sk',
             'join_type': 'left',
             'join_on': [
-                {'src': 'driver_id', 'dim': 'driver_id'}
+                {'src': 'driver_id', 'dim': 'navusoft_driver_id'}
             ]
         },
         {

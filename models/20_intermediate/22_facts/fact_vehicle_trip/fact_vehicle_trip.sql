@@ -17,10 +17,10 @@
             'dim_keys': ['samsara_vehicle_id']
         },
         'driver': {
-            'dim_model': 'dim_driver',
+            'dim_model': 'bridge_samsara__driver',
             'dim_sk': 'driver_sk',
             'src_keys': ['driver_id'],
-            'dim_keys': ['id']
+            'dim_keys': ['samsara_driver_id']
         },
         'end_address': {
             'dim_model': 'dim_address',

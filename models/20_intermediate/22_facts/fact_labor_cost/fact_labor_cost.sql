@@ -61,7 +61,7 @@ WITH
 
     final as (
     select 
-        sd.driver_sk, 
+        sd.work_order_sk, 
         count(sd.work_order_sk) over (
                         partition by
                             sd.driver_sk,
@@ -75,6 +75,7 @@ WITH
     left join driver_labor_cost dlc 
         on sd.driver_sk = dlc.driver_sk
         and sd.scheduled_date = dlc.date
+    where trip_hours is not null or timecard_hours is not null
     order by 1,2
     )
 

@@ -58,6 +58,11 @@
         "site_status_effective_date",
         "site_status",
         "site_status_text",
+
+        "latitude",
+        "longitude",
+
+        
     ],
     foreign_keys = [
         {

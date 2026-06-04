@@ -88,10 +88,45 @@ normalized_driver as (
 ),
 
 normalized_driver as (
-    select * 
-    from normalized_driver
-    where driver_map_name is not null
-    order by 1
+
+select
+        coalesce(s.driver_map_name, n.driver_map_name) as driver_map_name,
+
+        -- ✅ keep 1 samsara id (or aggregate if needed)
+        min(s.samsara_driver_id) as samsara_driver_id,
+
+        -- ✅ consolidate samsara names
+        listagg(distinct s.samsara_driver_name, ', ') 
+            within group (order by s.samsara_driver_name) 
+            as samsara_driver_name,
+
+        -- ✅ consolidate navusoft ids
+        listagg(distinct n.navusoft_driver_id, ', ')
+            within group (order by n.navusoft_driver_id)
+            as navusoft_driver_id,
+
+        -- ✅ consolidate navusoft names
+        listagg(distinct n.navusoft_driver_name, ', ')
+            within group (order by n.navusoft_driver_name)
+            as navusoft_driver_name,
+
+        -- ✅ ADP fields (choose appropriate behavior)
+        min(a.adp_driver_id) as adp_driver_id,
+        min(a.adp_associate_id) as adp_associate_id,
+        max(a.adp_hourly_rate) as adp_hourly_rate,
+
+        sysdate() as record_loaded_at
+
+    from samsara_driver_map s
+    full outer join navusoft_driver_map n 
+        on s.driver_map_name = n.driver_map_name
+    left join adp_base_rate a 
+        on n.navusoft_driver_id = a.navusoft_driver_id
+
+    where coalesce(s.driver_map_name, n.driver_map_name) is not null
+
+    group by 1
+
 )
 select nd.*, 
 from normalized_driver nd

@@ -39,36 +39,6 @@ WITH
         select  
             d.driver_sk,
             tc.date, 
-
-Save
-2829303132333435363738394041424344454647484950515253
-driver_sk
-5 of 11
-
-
-
-
-
-Commands
-Code quality
-Results
-Compiled code
-Lineage$0
-
-Save
-2829303132333435363738394041424344454647484950515253
-driver_sk
-5 of 11
-
-
-
-
-
-Commands
-Code quality
-Results
-Compiled code
-Lineage$0
             coalesce(adp_hourly_rate,0)::numeric(12,2) as adp_hourly_rate, 
             tc.hours::numeric(12,2) as timecard_hours,
             th.trip_hours::numeric(12,2) as trip_hours, 

@@ -69,8 +69,8 @@ WITH
                     ) as workorder_count, 
         dlc.trip_hours / workorder_count as allocated_trip_hours,
         dlc.timecard_hours / workorder_count as allocated_timecard_hours,
-        dlc.timecard_labor_cost / workorder_count as allocated_timecard__hours,
         dlc.trip_labor_cost / workorder_count as allocated_trip_labor_cost,
+        dlc.timecard_labor_cost / workorder_count as allocated_timecard_labor_cost,
     from service_details sd
     left join driver_labor_cost dlc 
         on sd.driver_sk = dlc.driver_sk

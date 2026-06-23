@@ -7,5 +7,5 @@
     table_name='timecards',
     column_expressions=columns,
     incremental_filter_column='_fivetran_synced',
-    unique_key= ['worker_id','timecard_id','date']
+    unique_key= ['associate_id','timecard_id','date']
 ) }}

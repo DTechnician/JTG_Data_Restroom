@@ -47,7 +47,7 @@ WITH
         from {{ref('dim_driver')}} d  
         full outer join db_jtg_dev.dbt_dtechnician.dim_date dt on 1=1
         left join {{ref('raw_adp__timecards')}} tc
-            on tc.worker_id = d.adp_associate_id and dt.date = tc.date
+            on tc.associate_id = d.adp_associate_id and dt.date = tc.date
         left join trip_hours th 
             on d.driver_sk = th.driver_sk and dt.date = th.trip_start_date
         where timecard_labor_cost <> 0 or trip_labor_cost <> 0

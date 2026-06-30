@@ -62,18 +62,18 @@ WITH
     final as (
     select 
         sd.work_order_sk, 
-        count(sd.work_order_sk) over (
-                        partition by
-                            sd.driver_sk,
-                            sd.scheduled_date
-                    ) as workorder_count, 
+        dlc.driver_sk,
+        case 
+            when count(sd.work_order_sk) over (partition by sd.driver_sk,sd.scheduled_date)  = 0 then 1
+            else count(sd.work_order_sk) over (partition by sd.driver_sk,sd.scheduled_date)
+        end as workorder_count, 
         dlc.trip_hours / workorder_count as allocated_trip_hours,
         dlc.timecard_hours / workorder_count as allocated_timecard_hours,
         dlc.trip_labor_cost / workorder_count as allocated_trip_labor_cost,
         dlc.timecard_labor_cost / workorder_count as allocated_timecard_labor_cost,
-    from service_details sd
-    left join driver_labor_cost dlc 
-        on sd.driver_sk = dlc.driver_sk
+    from driver_labor_cost dlc
+    left join service_details sd
+    on sd.driver_sk = dlc.driver_sk
         and sd.scheduled_date = dlc.date
     where trip_hours is not null or timecard_hours is not null
     order by 1,2

@@ -50,7 +50,7 @@ WITH
             on tc.associate_id = d.adp_associate_id and dt.date = tc.date
         left join trip_hours th 
             on d.driver_sk = th.driver_sk and dt.date = th.trip_start_date
-        where timecard_labor_cost <> 0 or trip_labor_cost <> 0
+        where timecard_hours <> 0 or trip_hours <> 0
     ),
     
     service_details as (

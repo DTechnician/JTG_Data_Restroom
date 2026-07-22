@@ -20,11 +20,10 @@ with
     ),
     
     adp_base_driver as (
-        select id as worker_id, w.associate_oid, lwa.latest_job_title, ph.legal_name_formatted_name, ph.legal_name_family_name_1, ph.legal_name_given_name, wbr.hourly_rate_amount_amount_value as hourly_rate
+        select id as worker_id, w.associate_oid, lwa.latest_job_title, ph.legal_name_formatted_name, ph.legal_name_family_name_1, ph.legal_name_given_name
         from {{ref('raw_adp__worker')}} w
-        join adp_latest_worker_assignment lwa on w.id = lwa.worker_id --inner join to remove non driver workers from ADP
+        join adp_latest_worker_assignment lwa on w.id = lwa.worker_id
         left join adp_person_history ph on w.id = ph.worker_id
-        left join {{ref('raw_adp__worker_base_remuneration')}} wbr on w.id = wbr.worker_id
         -- where status_value = 'Active'
     ),
 
@@ -38,30 +37,25 @@ with
         where id is not null and driver_name is not null
     ),
 
-    driver_mapping as (
-        select adp_driver_id, navusoft_driver_id, 
-        from {{ref('driver_mapping')}} uwm
-    ),
-
+    adp_navusoft_driver_mapping as (
+        select EXTERNALUSRID as adp_worker_id, nd.navusoft_driver_id, nd.navusoft_driver_name,
+        from {{ref('user_worker_mapping')}} uwm
+        join navusot_driver nd on uwm.id = nd.navusoft_driver_id
+        where EXTERNALUSRID is not null
+    )
     
 
 -- select * from adp_base_driver where id is null;
 
-    final as (
-        select  
-            adp_d.associate_oid,
-            upper(latest_job_title) as job_title,
-            upper(concat(legal_name_given_name,' ',legal_name_family_name_1)) as driver_name,
-            upper(legal_name_family_name_1) as driver_last_name,
-            upper(legal_name_given_name) as driver_given_name,
-            d_map.adp_driver_id,
-            d_map.navusoft_driver_id,
-            adp_d.hourly_rate,
-            sysdate() as record_loaded_at,
-            -- null as samsara_drvier_id,
-        from adp_base_driver adp_d
-        left join driver_mapping d_map on adp_d.worker_id = d_map.adp_driver_id
-    )
-
-select *
-from final
+select  
+    adp_d.associate_oid,
+    latest_job_title as job_title,
+    legal_name_formatted_name as driver_name,
+    legal_name_family_name_1 as driver_last_name,
+    legal_name_family_name_1 as driver_given_name,
+    adp_worker_id as adp_driver_id,
+    navusoft_driver_id,
+    -- null as samsara_drvier_id,
+   case when navusoft_driver_id is null then 'UNMAPPED' else 'MAPPED' end as mapping_ind,
+from adp_base_driver adp_d
+left join adp_navusoft_driver_mapping an_map on adp_d.worker_id = an_map.adp_worker_id

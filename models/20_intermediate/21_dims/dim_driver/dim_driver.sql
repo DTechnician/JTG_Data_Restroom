@@ -9,15 +9,15 @@
 {{ generate_dimension(
     source = "prep",
     table_name = "driver",
-    natural_key = ["driver_map_name"],
+    natural_key = ["associate_oid"],
     attributes = [
-        'samsara_driver_id',
-        'samsara_driver_name',
-        'navusoft_driver_id',
-        'navusoft_driver_name',
+        'job_title',
+        'driver_name',
+        'driver_last_name',
+        'driver_given_name',
         'adp_driver_id',
-        'adp_hourly_rate',
-        'adp_associate_id'
+        'navusoft_driver_id',
+        'hourly_rate'
     ],
     scd_type = 2
 ) }}

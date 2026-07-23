@@ -43,10 +43,6 @@ with
         from {{ref('driver_mapping')}} uwm
     ),
 
-    
-
--- select * from adp_base_driver where id is null;
-
     final as (
         select  
             adp_d.associate_oid,
@@ -54,7 +50,7 @@ with
             upper(concat(legal_name_given_name,' ',legal_name_family_name_1)) as driver_name,
             upper(legal_name_family_name_1) as driver_last_name,
             upper(legal_name_given_name) as driver_given_name,
-            adp_d.adp_driver_id,
+            adp_d.worker_id as adp_driver_id,
             d_map.navusoft_driver_id,
             adp_d.hourly_rate,
             sysdate() as record_loaded_at,

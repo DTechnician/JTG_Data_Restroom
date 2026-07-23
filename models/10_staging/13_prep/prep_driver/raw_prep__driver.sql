@@ -54,7 +54,7 @@ with
             upper(concat(legal_name_given_name,' ',legal_name_family_name_1)) as driver_name,
             upper(legal_name_family_name_1) as driver_last_name,
             upper(legal_name_given_name) as driver_given_name,
-            d_map.adp_driver_id,
+            adp_d.adp_driver_id,
             d_map.navusoft_driver_id,
             adp_d.hourly_rate,
             sysdate() as record_loaded_at,

@@ -41,6 +41,11 @@ models:
         +on_schema_change: append_new_columns
         +schema: raw
         +materialized: incremental
+      13_prep:
+        +tags: prep
+        +on_schema_change: append_new_columns
+        +schema: prep
+        +materialized: view
     20_intermediate:
       +materialized: table
       +tags: 20_intermediate

@@ -5,8 +5,13 @@ WITH
             d.driver_sk,
             tc.date, 
             coalesce(d.hourly_rate,0)::numeric(12,2) as adp_hourly_rate, 
+            coalesce(adp_hourly_rate,0)*1.4::numeric(12,2) as adp_overtime_hourly_rate,
+            tc.regular_hours::numeric(12,2) as timecard_regular_hours,
+            tc.regular_hours * coalesce(adp_hourly_rate,0)::numeric(12,2) as timecard_regular_labor_cost,
+            tc.overtime_hours::numeric(12,2) as timecard_overtime_hours,
+            tc.overtime_hours * coalesce(adp_overtime_hourly_rate,0)::numeric(12,2) as timecard_overtime_labor_cost,
             tc.hours::numeric(12,2) as timecard_hours,
-            tc.hours * coalesce(adp_hourly_rate,0)::numeric(12,2) as timecard_labor_cost,
+            (timecard_regular_labor_cost+timecard_overtime_labor_cost)::numeric(12,2) as timecard_labor_cost,
         from {{ref('dim_driver')}} d  
         full outer join {{ref('dim_date')}} dt on 1=1
         left join {{ref('raw_adp__timecards')}} tc
@@ -30,6 +35,10 @@ WITH
         end as workorder_count, 
         dlc.timecard_hours / workorder_count as allocated_timecard_hours,
         dlc.timecard_labor_cost / workorder_count as allocated_timecard_labor_cost,
+        dlc.timecard_regular_hours / workorder_count as allocated_timecard_regular_hours,
+        dlc.timecard_regular_labor_cost / workorder_count as allocated_timecard_regular_labor_cost,
+        dlc.timecard_overtime_hours / workorder_count as allocated_timecard_overtime_hours,
+        dlc.timecard_overtime_labor_cost / workorder_count as allocated_timecard_overtime_labor_cost,
     from driver_labor_cost dlc
     left join service_details sd
     on sd.driver_sk = dlc.driver_sk

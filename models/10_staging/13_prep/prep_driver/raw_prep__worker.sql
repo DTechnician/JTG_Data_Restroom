@@ -10,9 +10,9 @@ with
     ),
 
     adp_latest_worker_assignment as (
-        select worker_id, job_title as latest_job_title
+        select worker_id, job_title
         from {{ref('raw_adp__work_assignment_history')}}
-        where lower(job_title) like '%driver%'
+        where _fivetran_active = TRUE
         QUALIFY ROW_NUMBER() OVER (
             PARTITION BY worker_id
             ORDER BY ASSIGNMENT_STATUS_EFFECTIVE_DATE DESC
@@ -20,7 +20,7 @@ with
     ),
     
     adp_base_driver as (
-        select id as worker_id, w.associate_oid, lwa.latest_job_title, ph.legal_name_formatted_name, ph.legal_name_family_name_1, ph.legal_name_given_name, wbr.hourly_rate_amount_amount_value as hourly_rate
+        select id as worker_id, w.associate_oid, lwa.job_title, ph.legal_name_formatted_name, ph.legal_name_family_name_1, ph.legal_name_given_name, wbr.hourly_rate_amount_amount_value as hourly_rate, wbr.hourly_rate_amount_amount_value*1.5 as overtime_hourly_rate
         from {{ref('raw_adp__worker')}} w
         join adp_latest_worker_assignment lwa on w.id = lwa.worker_id --inner join to remove non driver workers from ADP
         left join adp_person_history ph on w.id = ph.worker_id
@@ -46,13 +46,14 @@ with
     final as (
         select  
             adp_d.associate_oid,
-            upper(latest_job_title) as job_title,
-            upper(concat(legal_name_given_name,' ',legal_name_family_name_1)) as driver_name,
-            upper(legal_name_family_name_1) as driver_last_name,
-            upper(legal_name_given_name) as driver_given_name,
-            adp_d.worker_id as adp_driver_id,
+            upper(job_title) as job_title,
+            upper(concat(legal_name_given_name,' ',legal_name_family_name_1)) as worker_name,
+            upper(legal_name_family_name_1) as worker_last_name,
+            upper(legal_name_given_name) as worker_given_name,
+            adp_d.worker_id as adp_worker_id,
             d_map.navusoft_driver_id,
             adp_d.hourly_rate,
+            adp_d.overtime_hourly_rate,
             sysdate() as record_loaded_at,
             -- null as samsara_drvier_id,
         from adp_base_driver adp_d

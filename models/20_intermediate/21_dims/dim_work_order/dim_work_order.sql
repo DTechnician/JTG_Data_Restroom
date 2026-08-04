@@ -115,9 +115,9 @@
             ]
         },
         {
-            'name': 'driver_sk',
-            'dim_model': 'dim_driver',
-            'dim_sk': 'driver_sk',
+            'name': 'worker_sk',
+            'dim_model': 'dim_worker',
+            'dim_sk': 'worker_sk',
             'join_type': 'left',
             'join_on': [
                 {'src': 'driver_id', 'dim': 'navusoft_driver_id'}

@@ -5,7 +5,7 @@ WITH
             d.driver_sk,
             tc.date, 
             coalesce(d.hourly_rate,0)::numeric(12,2) as adp_hourly_rate, 
-            coalesce(adp_hourly_rate,0)*1.4::numeric(12,2) as adp_overtime_hourly_rate,
+            coalesce(adp_hourly_rate,0)*1.5::numeric(12,2) as adp_overtime_hourly_rate,
             tc.regular_hours::numeric(12,2) as timecard_regular_hours,
             tc.regular_hours * coalesce(adp_hourly_rate,0)::numeric(12,2) as timecard_regular_labor_cost,
             tc.overtime_hours::numeric(12,2) as timecard_overtime_hours,

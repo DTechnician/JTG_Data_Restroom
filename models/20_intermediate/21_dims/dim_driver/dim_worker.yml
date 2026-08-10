@@ -1,0 +1,9 @@
+version: 2
+
+models:
+  - name: dim_worker
+    tests:
+      - unique:
+          column_name: worker_sk
+      - not_null:
+          column_name: worker_sk

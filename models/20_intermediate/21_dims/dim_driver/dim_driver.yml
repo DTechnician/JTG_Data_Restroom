@@ -1,9 +1,0 @@
-version: 2
-
-models:
-  - name: dim_driver
-    tests:
-      - unique:
-          column_name: driver_sk
-      - not_null:
-          column_name: driver_sk

@@ -29,20 +29,23 @@ WITH
     select 
         sd.work_order_sk, 
         dlc.worker_sk,
+        dt.date_sk as timecard_date_sk,
         case 
             when count(sd.work_order_sk) over (partition by sd.worker_sk,sd.scheduled_date)  = 0 then 1
             else count(sd.work_order_sk) over (partition by sd.worker_sk,sd.scheduled_date)
         end as workorder_count, 
-        dlc.timecard_hours / workorder_count as allocated_timecard_hours,
-        dlc.timecard_labor_cost / workorder_count as allocated_timecard_labor_cost,
-        dlc.timecard_regular_hours / workorder_count as allocated_timecard_regular_hours,
-        dlc.timecard_regular_labor_cost / workorder_count as allocated_timecard_regular_labor_cost,
-        dlc.timecard_overtime_hours / workorder_count as allocated_timecard_overtime_hours,
-        dlc.timecard_overtime_labor_cost / workorder_count as allocated_timecard_overtime_labor_cost,
+        dlc.timecard_hours / workorder_count as allocated_total_hours,
+        dlc.timecard_labor_cost / workorder_count as allocated_total_labor_cost,
+        dlc.timecard_regular_hours / workorder_count as allocated_regular_hours,
+        dlc.timecard_regular_labor_cost / workorder_count as allocated_regular_labor_cost,
+        dlc.timecard_overtime_hours / workorder_count as allocated_overtime_hours,
+        dlc.timecard_overtime_labor_cost / workorder_count as allocated_overtime_labor_cost,
     from worker_labor_cost dlc
     left join service_details sd
     on sd.worker_sk = dlc.worker_sk
         and sd.scheduled_date = dlc.date
+    left join {{ref('dim_date')}} dt 
+    on dlc.date = dt.date
     where timecard_hours is not null
     order by 1,2
     )

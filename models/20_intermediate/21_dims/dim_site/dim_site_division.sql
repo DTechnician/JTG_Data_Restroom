@@ -30,6 +30,17 @@
                 end" 
 		}
 	],
+    foreign_keys = [
+        {
+            'name': 'department_sk',
+            'dim_model': 'dim_department',
+            'dim_sk': 'department_sk',
+            'join_type': 'left',
+            'join_on': [
+                {'src': 'site_division_id', 'dim': 'site_division_id'}
+            ]
+        },
+    ],
     dedupe_strategy = 'latest',
     scd_type = 2
 ) }}

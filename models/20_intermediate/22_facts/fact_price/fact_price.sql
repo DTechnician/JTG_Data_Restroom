@@ -40,7 +40,7 @@ with
         
         from stg_navusoft_work_order wo
         join dim_work_order dwo on wo.workordernumber = dwo.workordernumber
-        left join stg_navusoft_site_service_history act on wo.siteservice_id = act.service_id
+        left join stg_navusoft_site_service_history act on wo.siteservice_id = act.site_service_id
         where rate <> 0
     )
 

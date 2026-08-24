@@ -40,6 +40,7 @@ with
     final as (
         select 
             sd.work_order_sk,
+            tm.trip_start_date as trip_date,
                 /* allocation divisor */
                 count(sd.work_order_sk) over (
                     partition by
@@ -60,7 +61,7 @@ with
                 tm.fuel_consumed_liters / workorder_count as allocated_fuel_consumed_liters
                     
         from  service_details sd  
-        join trip_measures tm 
+        left join trip_measures tm 
             on sd.scheduled_date = tm.trip_start_date
             and sd.vehicle_sk = tm.vehicle_sk
         order by tm.vehicle_map_name, sd.scheduled_date

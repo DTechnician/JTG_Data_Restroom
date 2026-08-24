@@ -9,7 +9,7 @@
 {{ generate_dimension(
     source = "navusoft",
     table_name = "site_service_history",
-    natural_key = ["service_id"],
+    natural_key = ["site_service_id"],
     attributes = [
 
         "start_date",

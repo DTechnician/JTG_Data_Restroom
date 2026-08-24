@@ -57,7 +57,7 @@
             'dim_sk': 'site_service_history_sk',
             'join_type': 'left',
             'join_on': [
-                {'src': 'siteservice_id', 'dim': 'service_id'}
+                {'src': 'siteservice_id', 'dim': 'site_service_id'}
             ]
         },
         {

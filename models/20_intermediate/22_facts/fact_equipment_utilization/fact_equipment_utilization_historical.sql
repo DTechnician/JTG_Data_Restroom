@@ -9,7 +9,7 @@ active_services AS (
 
     SELECT
         site_service_history_sk,
-        service_id,
+        site_service_id as service_id,
         site_id,
         site_division_id,
         lob_id,

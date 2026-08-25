@@ -1,18 +1,18 @@
-DEPARTMENT_NAME,SITE_DIVISION_ID,SITE_DIVISION_NAME,SUB_DEPARTMENT_CODE,SUB_DEPARTMENT_NAME,ALLOCATION_PCT
-New Jersey - Operations,1002,Ringwood,300,Operations - NJ,100
-New Jersey - Operations,1002,Ringwood,325,Operations - HamiltonNJ,100
-New York - Operations,1003,Long Island,450,Operations - NY,100
-Miami - Operations,1004,Miami,375,Operations - Miami,100
-Fort Myers - Operations,1001,Fort Myers,350,Operations - FM,100
-New York - Customer Service,1002,Ringwood,200,Customer Service - NY,25
-New York - Customer Service,1003,Long Island,200,Customer Service - NY,25
-New York - Customer Service,1004,Miami,200,Customer Service - NY,25
-New York - Customer Service,1001,Fort Myers,200,Customer Service - NY,25
-New Jersey - Customer Service,1002,Ringwood,250,Customer Service - NJ,25
-New Jersey - Customer Service,1003,Long Island,250,Customer Service - NJ,25
-New Jersey - Customer Service,1004,Miami,250,Customer Service - NJ,25
-New Jersey - Customer Service,1001,Fort Myers,250,Customer Service - NJ,25
-Utah - Customer Service,1002,Ringwood,CSUT,Customer Service UT,25
-Utah - Customer Service,1003,Long Island,CSUT,Customer Service UT,25
-Utah - Customer Service,1004,Miami,CSUT,Customer Service UT,25
-Utah - Customer Service,1001,Fort Myers,CSUT,Customer Service UT,25
+DEPARTMENT_CODE,DEPARTMENT_NAME,SITE_DIVISION_ID,SITE_DIVISION_NAME,SUB_DEPARTMENT_CODE,SUB_DEPARTMENT_NAME,ALLOCATION_PCT
+OPS_NJ,New Jersey - Operations,1002,Ringwood,300,Operations - NJ,100
+OPS_NJ,New Jersey - Operations,1002,Ringwood,325,Operations - HamiltonNJ,100
+OPS_NY,New York - Operations,1003,Long Island,450,Operations - NY,100
+OPS_MIA,Miami - Operations,1004,Miami,375,Operations - Miami,100
+OPS_FM,Fort Myers - Operations,1001,Fort Myers,350,Operations - FM,100
+CS_NY,New York - Customer Service,1002,Ringwood,200,Customer Service - NY,25
+CS_NY,New York - Customer Service,1003,Long Island,200,Customer Service - NY,25
+CS_NY,New York - Customer Service,1004,Miami,200,Customer Service - NY,25
+CS_NY,New York - Customer Service,1001,Fort Myers,200,Customer Service - NY,25
+CS_NJ,New Jersey - Customer Service,1002,Ringwood,250,Customer Service - NJ,25
+CS_NJ,New Jersey - Customer Service,1003,Long Island,250,Customer Service - NJ,25
+CS_NJ,New Jersey - Customer Service,1004,Miami,250,Customer Service - NJ,25
+CS_NJ,New Jersey - Customer Service,1001,Fort Myers,250,Customer Service - NJ,25
+CS_UT,Utah - Customer Service,1002,Ringwood,CSUT,Customer Service UT,25
+CS_UT,Utah - Customer Service,1003,Long Island,CSUT,Customer Service UT,25
+CS_UT,Utah - Customer Service,1004,Miami,CSUT,Customer Service UT,25
+CS_UT,Utah - Customer Service,1001,Fort Myers,CSUT,Customer Service UT,25

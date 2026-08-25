@@ -9,11 +9,9 @@
 {{ generate_dimension(
     source = "prep",
     table_name = "department",
-    natural_key = ["department_name", "site_division_id", "sub_department_code"],
+    natural_key = ["department_code"],
     attributes = [
-        'site_division_name',
-        'sub_department_name',
-        'allocation_pct'
+        'department_name'
     ],
     scd_type = 2
 ) }}

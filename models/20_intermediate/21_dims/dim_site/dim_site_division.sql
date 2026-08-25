@@ -14,33 +14,6 @@
     attributes = [
         'site_division_name'
     ],
-	derived_attributes = [
-		{'name': 'division_hourly_rate',
-			'expr': "case 
-                when site_division_id in (1001,1004) then 21
-                when site_division_id in (1002) then 24
-                when site_division_id in (1003) then 27
-                end" 
-		},
-		{'name': 'division_ot_rate',
-			'expr': "case 
-                when site_division_id in (1001,1004) then 31.5
-                when site_division_id in (1002) then 36
-                when site_division_id in (1003) then 40.5
-                end" 
-		}
-	],
-    foreign_keys = [
-        {
-            'name': 'department_sk',
-            'dim_model': 'dim_department',
-            'dim_sk': 'department_sk',
-            'join_type': 'left',
-            'join_on': [
-                {'src': 'site_division_id', 'dim': 'site_division_id'}
-            ]
-        },
-    ],
     dedupe_strategy = 'latest',
     scd_type = 2
 ) }}

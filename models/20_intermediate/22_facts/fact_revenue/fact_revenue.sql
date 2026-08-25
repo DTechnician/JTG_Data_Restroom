@@ -38,13 +38,10 @@ with
 
             --financials
             act.calculated_revenue as revenue,
-            (coalesce(dwo.calculated_timestamp_duration,0)*sd.division_hourly_rate)/60 as labor_cost,
-            act.calculated_revenue-labor_cost as profit_margin,
         
         from stg_navusoft_work_order wo
         join dim_work_order dwo on wo.workordernumber = dwo.workordernumber
         left join stg_navusoft_site_service_history act on wo.siteservice_id = act.site_service_id
-        left join dim_site_division sd on wo.division_id = sd.site_division_id
         where act.calculated_revenue <> 0
     )
 

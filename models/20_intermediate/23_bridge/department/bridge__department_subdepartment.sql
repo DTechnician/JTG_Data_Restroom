@@ -23,7 +23,7 @@ with
             ddm.allocation_pct,
         from dim_department dd
         join division_department_mapping ddm on dd.department_code = ddm.department_code
-        join  dim_sub_department dsd on ddm.sub_department_code = dsd.sub_department_code
+        join  dim_sub_department dsd on ddm.sub_department_code::varchar = dsd.sub_department_code::varchar
     )
 
 select * from bridge__department_division

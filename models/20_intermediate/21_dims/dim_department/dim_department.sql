@@ -11,7 +11,9 @@
     table_name = "department",
     natural_key = ["department_code"],
     attributes = [
-        'department_name'
+        'department_name',
+        'location',
+        'function'
     ],
     scd_type = 2
 ) }}

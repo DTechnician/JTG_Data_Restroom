@@ -20,10 +20,9 @@ with
         select distinct
             dd.department_sk,
             dsd.site_division_sk,
-            ddm.allocation_pct,
         from dim_department dd
         join division_department_mapping ddm on dd.department_code = ddm.department_code
-        join  dim_site_division dsd on ddm.site_division_id = dsd.site_division_id
+        join dim_site_division dsd on ddm.site_division_id = dsd.site_division_id
     )
 
 select * from bridge__department_division

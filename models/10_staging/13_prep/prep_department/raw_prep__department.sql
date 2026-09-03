@@ -3,6 +3,8 @@ with
         select distinct
             department_code,
             department_name,
+            location,
+            function,
             sysdate() as record_loaded_at,
         from {{ref('division_department_mapping')}}
     )

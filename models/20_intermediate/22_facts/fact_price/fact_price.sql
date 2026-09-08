@@ -13,18 +13,7 @@ with
 
     stg_navusoft_site_service_history as (
         select *,
-        sfm.sf_value,
-        rate/sfm.sf_value as calculated_revenue,
-        /* duration */
-        case
-            when start_date is not null
-                and end_date   is not null
-                and end_date   >= start_date
-            then datediff(minute, start_date, end_date)
-            else null
-        end as service_duration_minutes,
         from {{ref('raw_navusoft__site_service_history')}} ssh
-        left join {{ref('service_frequency_mapping')}} sfm on ssh.service_frequency = sfm.service_frequency
     ),
     dim_work_order as (select * from {{ref('dim_work_order')}}),
     

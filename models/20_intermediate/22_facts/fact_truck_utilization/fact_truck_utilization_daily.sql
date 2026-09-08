@@ -90,7 +90,9 @@ samsara_trip as (
         SUM(fuel_consumed_ml) as total_fuel_consump_ml,
         SUM(fuel_consumed_gal) as total_fuel_consump_gal,
         MAX(engine_hours_on) as engine_on_hrs,
-        MAX(engine_hours_on) / 60 * 100 AS utilization_percent
+        MAX(engine_hours_on) / 60 * 100 AS utilization_percent,
+        MAX(engine_hours_on) / 84 * 100 AS utilization_percent_84,
+        MAX(engine_hours_on) / 168 * 100 AS utilization_percent_168,
 
 
     from samsara_trip st
@@ -120,7 +122,9 @@ select
     total_fuel_consump_ml,
     total_fuel_consump_gal,
     engine_on_hrs,
-    utilization_percent
+    utilization_percent,
+    utilization_percent_84,
+    utilization_percent_168,
 
 from aggregated a
 left join {{ ref('dim_date') }} s_dt

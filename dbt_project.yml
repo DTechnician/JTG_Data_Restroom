@@ -48,7 +48,7 @@ models:
         +materialized: view
     20_intermediate:
       +materialized: table
-      +tags: 20_intermediate
+      +tags: int
       21_dims:
         +tags: dims
         +on_schema_change: append_new_columns
@@ -62,6 +62,10 @@ models:
       23_bridge:
         +tags: bridge
         +schema: jtg_dw
+    30_reports_and_reconciliation:
+      +materialized: view
+      +tags: rec_report
+      +schema: jtg_dw
 
 flags:
   require_generic_test_arguments_property: true

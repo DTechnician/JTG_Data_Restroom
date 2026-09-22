@@ -18,10 +18,10 @@ with
     ),
 
     audit_report_view as (
-        select 2 as data_touch_point_id, 'FACT' as data_touch_point, workordernumber , site_service_id, scheduled_date, rate, perunitrate
+        select 2 as data_touch_point_id, 'FACT' as data_touch_point,*
         from audit_fact
         union all
-        select 1 as data_touch_point_id, 'RAW' as data_touch_point, workordernumber , site_service_id, scheduled_date, rate, perunitrate
+        select 1 as data_touch_point_id, 'RAW' as data_touch_point,*
         from audit_landing
     )
 

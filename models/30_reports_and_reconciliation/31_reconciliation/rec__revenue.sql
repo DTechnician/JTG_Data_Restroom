@@ -1,6 +1,6 @@
 with
     audit_landing as (        
-        select workordernumber, ssh.site_service_id, wo.scheduled_date, ssh.rate, ssh.quantity, sfm.service_frequency, sfm.sf_value,
+        select workordernumber, ssh.site_service_id, wo.scheduled_date,
         coalesce(coalesce(rate,0)/ssh.quantity/sfm.sf_value, 0)::number(12,2) as revenue
         from {{ref('raw_navusoft__work_order')}} wo
         left join {{ref('raw_navusoft__site_service_history')}} ssh on wo.siteservice_id = ssh.site_service_id
@@ -20,10 +20,10 @@ with
     ),
 
     audit_report_view as (
-        select 2 as data_touch_point_id, 'FACT' as data_touch_point, workordernumber , site_service_id, scheduled_date, revenue
+        select 2 as data_touch_point_id, 'FACT' as data_touch_point,*
         from audit_fact
         union all
-        select 1 as data_touch_point_id, 'RAW' as data_touch_point, workordernumber , site_service_id, scheduled_date, revenue
+        select 1 as data_touch_point_id, 'RAW' as data_touch_point,*
         from audit_landing
     )
 

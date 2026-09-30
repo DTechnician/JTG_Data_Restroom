@@ -9,13 +9,23 @@ sources:
       - name: address
       - name: alert_incident
       - name: alert_incident_conditions
+      - name: ambient_air_temperature_milli_c
+      - name: barometric_pressure_pa
       - name: battery_milli_volt
       - name: driver
       - name: driver_hos_violation
       - name: driver_vehicle_assignment
       - name: dtc
+      - name: ecu_speed_mph
+      - name: engine_coolant_temperature_milli_c
+      - name: engine_load_percent
+      - name: engine_rpm
       - name: engine_state
       - name: fault_code
+      - name: form_template
+      - name: form_template_field
+      - name: form_template_field_option
+      - name: form_template_section
       - name: fuel_energy_by_driver_report
       - name: fuel_energy_by_vehicle_report
       - name: fuel_percent
@@ -24,6 +34,7 @@ sources:
       - name: gps_distance_meter
       - name: gps_odometer
       - name: hos_log
+      - name: intake_manifold_temperature_milli_c
       - name: j_1939_diagnostic_trouble_code
       - name: obd_engine_second
       - name: obd_odometer
@@ -32,6 +43,11 @@ sources:
       - name: route_stop
       - name: safety_behavior
       - name: safety_event
+      - name: safety_event_asset_tag
+      - name: safety_event_behavior_label
+      - name: safety_event_context_label
+      - name: safety_event_discontinued_20260917_000000
+      - name: safety_event_media
       - name: synthetic_engine_second
       - name: tag_address
       - name: tag_driver
@@ -43,5 +59,6 @@ sources:
       - name: users
       - name: vehicle
       - name: vehicle_idling_report
+      - name: vehicle_idling_report_discontinued_20260917_000000
       - name: vehicle_trip
       - name: vehicle_trip_asset

@@ -1,0 +1,11 @@
+version: 2
+
+models:
+  - name: raw_samsara__ecu_speed_mph
+    description: ""
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - vehicle_id
+              - time

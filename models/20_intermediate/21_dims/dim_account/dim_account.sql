@@ -45,7 +45,20 @@
         "account_source_name",
 
         "account_created_timestamp",
-        "account_created_by_user"
+        "account_created_by_user",
+
+        "site_id"
+    ],
+    foreign_keys = [
+        {
+            'name': 'site_sk',
+            'dim_model': 'dim_site',
+            'dim_sk': 'site_sk',
+            'join_type': 'left',
+            'join_on': [
+                {'src': 'site_id', 'dim': 'site_id'}
+            ]
+        },
     ],
     scd_type = 2
 ) }}

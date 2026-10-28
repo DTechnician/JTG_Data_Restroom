@@ -28,9 +28,11 @@
 
         "scheduled_date",
         "completion_date",
+        "completiondatetime",
 
         "exception_reason_code",
         "posted_status_name",
+        "sequence",
         "status",
         "quantity"
 	],

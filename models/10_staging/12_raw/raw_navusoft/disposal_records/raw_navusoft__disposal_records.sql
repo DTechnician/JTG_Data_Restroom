@@ -6,6 +6,7 @@
 {'name': 'disposaldate', 'type': 'timestamp_ntz'},
 {'name': 'division_id', 'type': 'number'},
 {'name': 'disposallocation_id', 'type': 'number'},
+{'name': 'disposal_record_id', 'type': 'number'},
 {'name': 'materialclass_id', 'type': 'number'},
 {'name': 'workordernumber', 'type': 'number'},
 {'name': 'disposaluom_id', 'type': 'number'},

@@ -7,6 +7,7 @@
 {'name': 'minimum_charge_type', 'type': 'varchar'},
 {'name': 'division_id', 'type': 'number'},
 {'name': 'siteservice_id', 'type': 'number'},
+{'name': 'site_service_charge_id', 'type': 'number'},
 {'name': 'rate', 'type': 'number'},
 {'name': 'quantity', 'type': 'number'},
 {'name': 'workorderminimum', 'type': 'number'},

@@ -69,3 +69,8 @@ models:
 
 flags:
   require_generic_test_arguments_property: true
+
+on-run-start:
+  - "{{ bg_reset() }}"
+on-run-end:
+  - "{{ bg_swap(results) }}"

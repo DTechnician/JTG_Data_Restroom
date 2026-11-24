@@ -102,14 +102,14 @@ id,firstname,email,lastname,fullname,managerId,title,reportingdivisionId,departm
 14351,Eric,edebose@johntogo.com,Debose,Eric Debose,,Driver,,1001,VW9W68LO7
 14352,Jonathan,jonathand@johntogo.com,Dolan,Jonathan Dolan,14179,Driver,,1001,XRDUVS81P
 14353,Matthew ,mgross@johntogo.com,Gross,Matthew  Gross,,Driver,,1001,
-14354,Andy,andyl@johntogo.com,Lebrun,Andy Lebrun,14179,Driver,,1001,
+14354,Andy,andyl@johntogo.com,Lebrun,Andy Lebrun,14179,Driver,,1001,GC6467WLG
 14355,DELETE,mmassaro@johntogo.com,DELETE,DELETE DELETE,,Driver,,1001,
 14356,Harold,haroldm@johntogo.com,Mercy,Harold Mercy,14179,Driver,,1001,SQW306R5J
 14357,DELETE,delete@delete.com,DELETE,DELETE DELETE,,Driver,,1001,
 14358,Virgilio,virgilior@johntogo.com,Reyes Jr.,Virgilio Reyes Jr.,14179,Driver,,1001,QQ46OI4PA
 14359,Frank,frankr@johntogo.com,REYES GALVEZ,Frank REYES GALVEZ,14179,Driver,,1001,SV5EPMLEE
 14360,David,davidr@johntogo.com,Rivera,David Rivera,14179,Driver,,1001,G81OSWTUE
-14361,Jason,jasono@johntogo.com,Owen,Jason Owen,,Driver,,1001,
+14361,Jason,jasono@johntogo.com,Owen,Jason Owen,,Driver,,1001,GTRUXORBT
 14362,Arthur,ahernandez@johntogo.com,Hernandez,Arthur Hernandez,,Driver,,1001,
 14363,Freddie,fbrand@johntogo.com,Brand,Freddie Brand,,Driver,,1001,L8TGV3DRU
 14379,Ramon,ramonl@johntogo.com,Lopez Duran,Ramon Lopez Duran,14174,Driver,,1001,17ODT4R6O
@@ -178,7 +178,7 @@ id,firstname,email,lastname,fullname,managerId,title,reportingdivisionId,departm
 16474,HAROLD,harold@gmailnoemail.com,MERCY,HAROLD MERCY,14179,Driver,,1001,
 16475,Virgilio,virgilor@johntogo.com,Reyes Carcases Sr,Virgilio Reyes Carcases Sr,14179,Driver,,1001,RKLZUGAG4
 16476,Jimmy,jimmyb@johntogo.com,Bayes,Jimmy Bayes,14179,Driver,,1001,A69RVESIQ
-16477,Alier,alierb@johntogo.com,Bauta Machado,Alier Bauta Machado,14186,Driver,,1001,A69RVESIQ
+16477,Alier,alierb@johntogo.com,Bauta Machado,Alier Bauta Machado,14186,Driver,,1001,ZXY0MXEUC
 16478,Alian ,aliana@johntogo.com,Albertini Valdes,Alian  Albertini Valdes,14186,Driver,,1001,5G5XMM45S
 16479,CARLOS,carlosg@johntogo.com,GARCIA,CARLOS GARCIA,14179,Driver,,1001,V3H6GGL72
 16480,RICK,rickb@johntogo.com,BROOKS,RICK BROOKS,14179,Driver,,1001,86K2BWGBB
@@ -231,7 +231,7 @@ id,firstname,email,lastname,fullname,managerId,title,reportingdivisionId,departm
 20103,Marcelino,marcelinos@johntogo.com,Salinas Arias,Marcelino Salinas Arias,14184,Driver,,1001,XW30151YJ
 20104,B J,bjg@johntogo.com,Gonzalez Disla,B J Gonzalez Disla,14184,Driver,,1001,B6AS3ZL7E
 20114,John H,johnb@johntogo.com,Betancourt Castro,John H Betancourt Castro,14184,Driver,,1001,2857ZQXE7
-20200,Kelvin,kelvinf@johntogo.com,Francisco Fermin,Kelvin Francisco Fermin,14184,Driver,,1001,JT8EGND02
+20200,Kelvin,kelvinf@johntogo.com,Francisco Fermin,Kelvin Francisco Fermin,14184,Driver,,1001,85M9VIQBA
 20217,Luis,luisa@johntogo.com,Aguilar Estrada,Luis Aguilar Estrada,14184,Driver,,1001,PSR0D0K8X
 20223,Kevin,kevinh@johntogo.com,Hurtado Garcia,Kevin Hurtado Garcia,14174,Driver,,1001,RHPKRCPW2
 20296,Kristofer,kristofera@johntogo.com,Anderson,Kristofer Anderson,14078,Chief Sales Officer,,1002,
@@ -273,12 +273,12 @@ id,firstname,email,lastname,fullname,managerId,title,reportingdivisionId,departm
 24153,Joe,joef@johntogo.com,Fiallo Quintero,Joe Fiallo Quintero,14186,Ser Driver,,1001,4RBVRVXF2
 24275,Bonnavie,bbalansag@johntogo.com,Balansag,Bonnavie Balansag,14161,,,1003,
 24369,Angela,adesantis@getexact.com,Desantis,Angela Desantis,14078,,,1000,
-24461,Rafael,rafaelt@johntogo.com,Tavarez Guzman,Rafael Tavarez Guzman,14174,Ser Driver,,1001,
-24474,Dadiarc,dadiarcr@johntogo.com,Rabaza Pineda,Dadiarc Rabaza Pineda,14184,Ser Driver,,1001,
+24461,Rafael,rafaelt@johntogo.com,Tavarez Guzman,Rafael Tavarez Guzman,14174,Ser Driver,,1001,RS8O34AQO
+24474,Dadiarc,dadiarcr@johntogo.com,Rabaza Pineda,Dadiarc Rabaza Pineda,14184,Ser Driver,,1001,Y1GFFT3UB
 24478,Julio,julior@johntogo.com,Robla,Julio Robla,20296,Outside Sales Rep,,1001,
 24600,Christina,christinao@johntogo.com,Ohlendorf,Christina Ohlendorf,14159,Inside Sales Rep,,1002,
 24766,David,pickerd@caldicotcapital.com,Pickerd,David Pickerd,,,,,
-25094,Sam,samr@johntogo.com,Rico,Sam Rico,14174,Ser Driver,,1001,
+25094,Sam,samr@johntogo.com,Rico,Sam Rico,14174,Ser Driver,,1001,9TB36Y06M
 25133,Cash,cashc@johntogo.com,Cazeau,Cash Cazeau,14184,Ser Driver,,1001,
 25170,Ashley,ashleyg@johntogo.com,Garcia,Ashley Garcia,14161,Customer Service Rep,,1003,
 25493,Sandi,sandia@johntogo.com,Alonso,Sandi Alonso,14161,Customer Service Rep,,1003,
@@ -295,3 +295,18 @@ id,firstname,email,lastname,fullname,managerId,title,reportingdivisionId,departm
 26165,Jessica,jessicaa@johntogo.com,Anoun,Jessica Anoun,14161,Customer Service Rep,,1003,1WB01M36U
 26185,Ma. Angelica,Maangelicam@johntogo.com,Manuzon,Ma. Angelica Manuzon,16259,Collections Rep,,1000,
 26370,Hashim,hashiml@johntogo.com,Long,Hashim Long,22928,Ser Driver,,1001,6ZC8S6QFO
+26947,,,,Yasmani Rodriguez,,,,,UPY27F94R
+27138,,,,Jairo Betancourt,,,,,QAGWRFC65
+27140,,,,Eric Lattimer,,,,,UEQNKV0O9
+27226,,,,Ricardo Blanco Fernandez,,,,,GDXTUR5B2
+27236,,,,Christian Alvarez,,,,,FHJTLSRUP
+27311,,,,Magaly Saltos Alegria,,,,,0A2XODFM0
+28023,,,,Stephen Brunson,,,,,9LC3YQLM8
+28318,,,,Zavier Sanchez,,,,,7R0YGDQZV
+29754,,,,Justin Hassele,,,,,LC1LNIY1D
+29755,,,,Rudy Monroy Montoya,,,,,Z2R2WJI4W
+29756,,,,Oscar Torres Heredia,,,,,L269QVW48
+29760,,,,Brayan Castillo,,,,,1DZFPY5GT
+30075,,,,Donald Stittiam,,,,,CFFLE17AP
+30442,,,,Orlando Rodriguez,,,,,OLED41G1T
+30513,,,,Dennis Ramos,,,,,Z36DE137P

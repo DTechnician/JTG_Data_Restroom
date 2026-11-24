@@ -26,6 +26,7 @@ clean-targets:
 # Configuring models
 models:
 
+  +database: DB_JTG_DEV_LOAD
   # ⬇️ Added persist_docs here for the entire project
   +persist_docs:
     relation: true
